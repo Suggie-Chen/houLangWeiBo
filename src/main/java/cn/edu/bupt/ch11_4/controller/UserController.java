@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/home")
     String home()
     {
-        return "/user/home";
+        return "user/home";
     }
 
     @GetMapping("/login")

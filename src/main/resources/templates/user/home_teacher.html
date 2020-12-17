@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+        welcome to houlang weibo!
+        这里是微博整体首页
+        <form th:action="@{/user/logout}" method="post">
+            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+            <input type="submit" value="logout">
+</body>
+</html>
