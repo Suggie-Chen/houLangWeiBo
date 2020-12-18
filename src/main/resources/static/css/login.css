@@ -3,6 +3,9 @@ body {
     padding: 0;
     /*background-color: #17a2b8;*/
     background-image: url("../images/1.jpg");
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    background-attachment: fixed;
     height: 100vh;
 }
 #login .container #login-row #login-column #login-box {
@@ -10,7 +13,7 @@ body {
     max-width: 600px;
     height: 360px;
     border: 1px solid #eee9e9;
-    background-color: #EAEAEA;
+    background-color:rgba(256,256,256,0.6);
 }
 #login .container #login-row #login-column #login-box #login-form {
     padding: 20px;

@@ -2,7 +2,7 @@ body{
 	background: url(../images/bg.jpg);
 	background-repeat:no-repeat;
   	background-size:100% 100%;
-   	background-attachment: fixed;"
+   	background-attachment: fixed;
 	font-family: tahoma,"microsoft yahei","\5FAE\8F6F\96C5\9ED1"!important;
 }
 .navbar-right a{
