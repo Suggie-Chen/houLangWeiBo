@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Please sign in</title>
+    <title>后浪微博</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
@@ -29,17 +29,20 @@
                             <label for="password" class="text-info">Password:</label><br>
                             <input type="text" name="password" id="password" class="form-control">
                         </div>
+
+                        <p th:if="${param.error}" class="text-info">用户名或密码有误，请重新输入。</p>
+
+                        <ul class="list-inline">
+                            <a href="/user/register" th:href="@{/user/register}">Register here</a>
+                            <a href="/tourist/" th:href="@{/tourist/}">随便看看</a>
+                            <a href="/forget" th:href="@{/forget}">忘记密码</a>
+                        </ul>
+
                         <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                             <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
                         </div>
-                        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
-                        <div id="register-link" class="text-right">
-                            <a href="user/register.html" class="text-info" th:href="@{/user/register}">Register here</a>
-                        </div>
-                        <div id="tourist-link" class="text-center">
-                            <a href="user/register.html" class="text-info" th:href="@{/tourist/}">随便看看</a>
-                        </div>
+                        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+
                     </form>
                 </div>
             </div>

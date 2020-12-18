@@ -31,10 +31,11 @@ public class UserController {
         return "/user/home";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login/**")
     String login(Model model){
-        return "/login";
+        return "login";
     }
+
 
     @GetMapping("/register")
     String register(){
@@ -46,6 +47,7 @@ public class UserController {
         SysUser sysUser = sysUserRepository.findByUsername(username);
         if(sysUser != null){
             model.addAttribute("msg","用户名已存在！");
+            System.out.println("注册失败处理=============用户名已存在");
             return "user/register";
         }else {
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -61,13 +63,9 @@ public class UserController {
                 sysUser.setRoles(roles);
 //            }
             sysUserRepository.save(sysUser);
+            System.out.println("注册成功处理=============");
             return "redirect:/user/login";
 
         }
-
-
-
-
     }
-
 }

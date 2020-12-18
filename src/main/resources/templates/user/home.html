@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>home</title>
@@ -8,7 +8,8 @@
         welcome to houlang weibo!
         这里是微博整体首页
         <form th:action="@{/user/logout}" method="post">
-            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
             <input type="submit" value="logout">
+        </form>
 </body>
 </html>
