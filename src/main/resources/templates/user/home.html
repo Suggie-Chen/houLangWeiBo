@@ -7,7 +7,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
     <title>微博</title>
-
+<!--    &lt;!&ndash; jQuery文件。务必在bootstrap.min.js 之前引入 &ndash;&gt;-->
+<!--    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>-->
+<!--    &lt;!&ndash; bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js &ndash;&gt;-->
+<!--    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>-->
+<!--    &lt;!&ndash; 最新的 Bootstrap4 核心 JavaScript 文件 &ndash;&gt;-->
+<!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 
@@ -72,7 +77,6 @@
                     <form role="form" style="margin-top: 50px;">
                         <div class="form-group">
                             <div class="col-sm-12">
-
                                 <div contenteditable="true" id="content" class="form-control "></div>
                             </div>
                             <div class="col-sm-12" style="margin-top: 12px;">
@@ -83,8 +87,6 @@
                                     <input type="file" name="" class="select_Img" style="display: none">
                                     <img class="preview" src="">
                                 </span>
-
-
                                 <div class="myEmoji">
                                     <ul id="myTab" class="nav nav-tabs">
                                         <li class="active">
@@ -98,12 +100,10 @@
                                     <div id="myTabContent" class="tab-content">
                                         <div class="tab-pane fade in active" id="set">
                                             <div class="emoji_1"></div>
-
                                         </div>
                                         <div class="tab-pane fade" id="hot">
                                             <div class="emoji_2"></div>
                                         </div>
-
                                     </div>
                                 </div>
                                 <!-- <span> <input type="file" id="selectImg" value=""></input> </span> -->
@@ -125,14 +125,7 @@
                                 今天天气不错!
                                 <img class="mypic" src="/images/bg2.jpg">
                             </div>
-<!--                            <div>-->
-<!--                                <div>点赞<div>11</div></div>-->
-<!--                                <div>评论</div>-->
-<!--                                <span class="emoji">表情</span>-->
-<!--                            -->
-<!--                                <span class="pic">图片	</span>-->
                                 <span>点赞</span>
-
                                 <span>评论</span>
                             </div>
 
@@ -141,8 +134,26 @@
 
 
                 </div>
+                <div class="row item_msg" >
+                    <div class="col-sm-12 col-xs-12 message">
+                        <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+                        <div class="col-sm-10 col-xs-10">
+                            <span style="font-weight: bold;">Jack.C</span>
+                            <br>
+                            <small class="date" style="color:#999">1分钟前</small>
+                            <div class="msg_content">
+                                今天天气不错!
+                                <img class="mypic" src="/images/bg2.jpg">
+                            </div>
+                            <span>点赞</span>
+                            <span>评论</span>
+                        </div>
 
 
+                    </div>
+
+
+                </div>
             </div>
 
 
@@ -212,14 +223,11 @@
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function () {
-
             $("#content").keyup(function () {
-
                 //判断输入的字符串长度
                 var content_len = $("#content").text().replace(/\s/g, "").length;
 
                 $(".tips").text("已经输入" + content_len + "个字");
-
 
                 if (content_len == 0) {
                     // alert(content);
@@ -231,55 +239,54 @@
                 }
             });
 
-
             $(".pic").click(function () {
-
                 $(".select_Img").click();
-
-
             })
 
             // 	function confirm(){
-
             // 		var r= new FileReader();
             // f=$(".select_Img").files[0];
             // r.readAsDataURL(f);
             // r.onload=function(e) {
             // 	$(".preview").src=this.result;
-
             // };
             // 	}
 
             //点击按钮发送内容
             $("#send").click(function () {
-
-                // var myDate = new Date();
-
+                var time = new Date();
                 //   var min = myDate.getMinutes();
-
                 //   var time = min-(min-1);
-
                 //   //alert(time);
-
-                var content = $("#content").html();
+                var content = $("#content").text();
 
                 //判断选择的是否是图片格式
                 var imgPath = $(".imgPath").text();
                 var start = imgPath.lastIndexOf(".");
                 var postfix = imgPath.substring(start, imgPath.length).toUpperCase();
 
-
                 if (imgPath != "") {
 
                     if (postfix != ".PNG" && postfix != ".JPG" && postfix != ".GIF" && postfix != ".JPEG") {
                         alert("图片格式需为png,gif,jpeg,jpg格式");
                     } else {
-                        $(".item_msg").append("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;''>Jack.C</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' onerror='this.src='i/mages/bg_1.jpg' src='file:///" + imagesPath + "' ></div></div></div>");
+                        $(".item_msg").append("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;''>Jack.C</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' onerror='this.src='/images/bg_1.jpg' src='file:///" + imagesPath + "' ></div></div></div>");
                     }
                 } else {
                     $(".item_msg").append("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;''>Jack.C</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "</div></div></div>");
                 }
-
+                $.ajax({
+                    type:"POST",//提交数据的类型 POST/GET
+                    url:"/user/home/post",//提交的网址
+                    data:{"content":content,"time":time,"id":1,"thumb_up":0},//提交的数据
+                    dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
+                    success : function(data) {
+                    $('#content').empty(); // 清空resText里面的所有内容
+                    },
+                    // error: function(){//请求出错处理
+                    //     alert("发送出错");
+                    // }
+                });
             });
 
             //添加表情包1
@@ -295,28 +302,20 @@
 
 
             $(".emoji").click(function () {
-
                 $(".myEmoji").show();
-
                 //点击空白处隐藏弹出层
                 $(document).click(function (e) {
-
                     if (!$("#edit_form").is(e.target) && $("#edit_form").has(e.target).length === 0) {
-
                         $(".myEmoji").hide();
                     }
                 });
-
-
             });
 
             //将表情添加到输入框
             $(".myEmoji img").each(function () {
                 $(this).click(function () {
                     var url = $(this)[0].src;
-
                     $('#content').append("<img src='" + url + "' style='width:25px;height:25px' >");
-
                     $("#send").removeClass("disabled");
                 })
             })
@@ -325,16 +324,12 @@
             $(".mypic").click(function () {
                 var oWidth = $(this).width(); //取得图片的实际宽度
                 var oHeight = $(this).height(); //取得图片的实际高度
-
                 if ($(this).height() != 200) {
                     $(this).height(200);
                 } else {
                     $(this).height(oHeight + 200 / oWidth * oHeight);
-
                 }
-
             })
-
         })
     </script>
 
