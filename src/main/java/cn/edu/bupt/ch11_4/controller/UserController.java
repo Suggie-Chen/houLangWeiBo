@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.http.HttpRequest;
+//import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +78,13 @@ public class UserController {
 
         }
     }
+
+    @GetMapping("/personal")
+    String personal()
+    {
+        return "user/personal";
+    }
+
 
     @PostMapping("/home/post")
     void get_message(@RequestParam(value = "content") String content,
