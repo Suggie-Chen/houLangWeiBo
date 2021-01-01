@@ -7,6 +7,10 @@ import cn.edu.bupt.ch11_4.entity.Message;
 import cn.edu.bupt.ch11_4.entity.SysRole;
 import cn.edu.bupt.ch11_4.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,23 +41,34 @@ public class UserController {
     SysRoleRepository sysRoleRepository;
 
     @GetMapping("/home")
-    String home()
+    String home(Model model,
+                @RequestParam(value = "start",defaultValue = "0") Integer start,
+                @RequestParam(value = "limit",defaultValue = "9") Integer limit)
     {
+        //得到当前用户名
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        start = start <0 ? 0 :start;
+        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+        Pageable pageable = PageRequest.of(start,limit,sort);
+        Page<Message> messages = messageRepository.findAll(pageable);
+        model.addAttribute("messages",messages);
+        model.addAttribute("uname", uname);
         return "user/home";
     }
     @PostMapping("/home")
     void get_message(@RequestParam(value = "content") String content,
                      @RequestParam(value = "time") Date time,
-                     @RequestParam(value = "id") Long id,
                      @RequestParam(value = "thumb_up") Integer thumb_up) {
 //        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         //获取当前用户id
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
+        String uname = uid.getUsername();
 
-        System.out.println("id:");
         System.out.println(userid);
-        System.out.println(id);
+        System.out.println(uname);
         System.out.println(time);
         System.out.println(content);
         System.out.println(thumb_up);
@@ -61,11 +76,10 @@ public class UserController {
         Message m = new Message();
         m.setContent(content);
         m.setTime(time);
-        m.setId(id);
         m.setUserid(userid);
         m.setThumb_up(thumb_up);
+        m.setName(uname);
         messageRepository.save(m);
-
     }
 
     @GetMapping("/login/**")

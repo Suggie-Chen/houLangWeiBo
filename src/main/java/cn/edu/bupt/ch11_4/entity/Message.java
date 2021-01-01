@@ -14,6 +14,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;           //消息id
     private Long userid;       //用户id
+    private String name;       //用户名
     private Date time;         //发布时间
     private String content;    //正文
     private Integer thumb_up;  //点赞数
