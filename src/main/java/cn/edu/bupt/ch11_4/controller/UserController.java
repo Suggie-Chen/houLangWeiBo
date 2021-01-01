@@ -82,6 +82,31 @@ public class UserController {
         messageRepository.save(m);
     }
 
+    @GetMapping("/personal")
+    String personal(Model model,
+                @RequestParam(value = "start",defaultValue = "0") Integer start,
+                @RequestParam(value = "limit",defaultValue = "9") Integer limit)
+    {
+        //得到当前用户名
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+//        start = start <0 ? 0 :start;
+//        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+//        Pageable pageable = PageRequest.of(start,limit,sort);
+//        Page<Message> messages = messageRepository.findAll(pageable);
+//        model.addAttribute("messages",messages);
+//        model.addAttribute("uname", uname);
+//        return "user/personal";
+        start = start <0 ? 0 :start;
+        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+        Pageable pageable = PageRequest.of(start,limit,sort);
+        Page<Message> messages = messageRepository.findByName(uname, pageable);
+        model.addAttribute("messages",messages);
+        model.addAttribute("uname", uname);
+        return "user/personal";
+    }
+
     @GetMapping("/login/**")
     String login(Model model){
         return "login";
@@ -119,14 +144,5 @@ public class UserController {
 
         }
     }
-
-    @GetMapping("/personal")
-    String personal()
-    {
-        return "user/personal";
-    }
-
-
-
 
 }
