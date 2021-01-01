@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>微博-个人主页</title>
+    <!--    &lt;!&ndash; jQuery文件。务必在bootstrap.min.js 之前引入 &ndash;&gt;-->
+    <!--    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--    &lt;!&ndash; bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js &ndash;&gt;-->
+    <!--    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>-->
+    <!--    &lt;!&ndash; 最新的 Bootstrap4 核心 JavaScript 文件 &ndash;&gt;-->
+    <!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+</head>
+<body>
+    <nav class="navbar  navbar-fixed-top" role="navigation" style="background: #e0620d ;padding-top: 3px;height:50px;">
+        <div class="container-fluid" style="background: #fff;">
+            <div class="navbar-header ">
+                <span class="navbar-brand " style="font-weight:normal;font-style: italic" href="#">
+                    <img src="/images/logo.png" height="20" width="20" />微博</span>
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#my-navbar-collapse">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索博客">
+                    <i class="glyphicon glyphicon-search btn_search"></i>
+                    <!--  <button type="submit" class="btn btn-default">提交</button> -->
+                </div>
+            </form>
+
+            <div class="collapse navbar-collapse" id="my-navbar-collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/user/home"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;首页</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            设置 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">退出登录</a></li>
+                            <!--                            <li><a href="#">登录</a></li>-->
+                            <!--                            <li><a href="#">注册</a></li>-->
+
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+        <hr style="margin: 0;padding: 0;color:#222;width: 100%">
+    </nav>
+
+    <div class="shadow text-center">
+        <div class="pf_photo" >
+            <p class="photo_wrap">
+                <img src="/images/icon.png" style="border-radius: 50%; width: 15%; margin-top: 5% ">
+            </p>
+        </div>
+
+        <div class="pf_username " >
+            <h1 class="username" style="font-size:150%" >后浪微博1号选手
+                <button type="button" class="btn btn-primary btn-lg"
+                        style="background:#31b0d5; border-color:#31b0d5; font-size: 10px">
+                    <span class="glyphicon glyphicon-ok"></span> 已关注
+                </button>
+            </h1>
+        </div>
+
+        <div class="container container_bg"
+             style="padding-top: 20px; padding-bottom: 20px;margin-bottom: 10px; font-size: 20px">
+            <div class="pf_opt row">
+                <div class="col-md-2 col-md-offset-2">
+                    <span class="sort">关注 123</span>
+                </div>
+                <div class="col-md-2">
+                    <span class="sort">粉丝 123</span>
+                </div>
+                <div class="col-md-2">
+                    <span class="sort">博客 123</span>
+                </div>
+                <div class="col-md-2 dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        按时间排序<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">按点赞数排序</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container_bg"  style="margin-bottom: 15px">
+         <div class="row item_msg">
+             <div class="col-sm-8 col-xs-12 col-md-offset-2 message">
+                 <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+                 <div class="col-sm-10 col-xs-10">
+                     <span style="font-weight: bold;">Jack.C</span>
+                     <br>
+                     <small class="date" style="color:#999">1分钟前</small>
+                     <div class="msg_content">
+                         今天天气真冷!
+                         <img class="mypic" src="/images/bg3.jpg">
+                     </div>
+                     <span>点赞</span>
+                     <span>评论</span>
+                 </div>
+             </div>
+         </div>
+
+        <div class="row item_msg" >
+            <div class="col-sm-8 col-xs-12 col-md-offset-2  message">
+                <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+                <div class="col-sm-10 col-xs-10">
+                    <span style="font-weight: bold;">Jack.C</span>
+                    <br>
+                    <small class="date" style="color:#999">1分钟前</small>
+                    <div class="msg_content">
+                        今天天气不错!
+                        <img class="mypic" src="/images/bg2.jpg">
+                    </div>
+                    <span>点赞</span>
+                    <span>评论</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <p>都被你看完啦，已经到底啦~</p>
+    </div>
+</body>
+</html>
