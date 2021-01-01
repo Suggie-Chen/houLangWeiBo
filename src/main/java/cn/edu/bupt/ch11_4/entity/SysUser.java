@@ -1,6 +1,8 @@
 package cn.edu.bupt.ch11_4.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,6 +26,10 @@ public class SysUser implements UserDetails {
     //在系统中定义用户，角色，权限这三种实体，一个用户可以拥有多个角色，一个角色可以被多个用户拥有，所以用户与角色之间是多对多的关系，为了易于理解，这里加入第三种实体权限，作为用户和角色的中间关联实体，把用户与角色间的多对多关系拆为两个一对多的关联关系。这样一个用户就对应着多个权限，一个权限对应着一个用户，而一个角色对应着多个权限，一个权限对应着一个角色。
     private List<SysRole> roles;
 
+//    //一个用户对应多条微博
+////    @Fetch(FetchMode.SUBSELECT)
+//    @OneToMany(mappedBy = "sysuser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private Set<Message> messages = new ArraySet<Message>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -54,4 +61,5 @@ public class SysUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

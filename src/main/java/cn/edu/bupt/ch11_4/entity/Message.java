@@ -12,7 +12,8 @@ import java.util.List;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;           //用户id
+    private Long id;           //消息id
+    private Long userid;       //用户id
     private Date time;         //发布时间
     private String content;    //正文
     private Integer thumb_up;  //点赞数
@@ -24,4 +25,8 @@ public class Message {
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments = new ArrayList<Comment>();
+
+//    @ManyToOne
+//    @JoinColumn
+//    private SysUser sysuser;
 }

@@ -45,16 +45,17 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Jack.C</a></li>
-
-                    <li class="dropdown">
+<!--                    <li class="dropdown">-->
+                    <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             设置 <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">退出登录</a></li>
-<!--                            <li><a href="#">登录</a></li>-->
-<!--                            <li><a href="#">注册</a></li>-->
-
+<!--                            <li><a href="#">退出登录</a></li>-->
+                            <form th:action="@{/user/logout}" method="post">
+                                <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                                <input type="submit" value="退出登录">
+                            </form>
                         </ul>
                     </li>
                 </ul>
@@ -113,6 +114,23 @@
                     </form>
                 </div>
 
+                <!--th显示微博-->
+                <div class="row item_msg" th:remove="all-but-first">
+                    <div class="col-sm-12 col-xs-12 message">
+                        <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+                        <div class="col-sm-10 col-xs-10">
+                            <span style="font-weight: bold;">Jack.C</span>
+                            <br>
+                            <small class="date" style="color:#999">1分钟前</small>
+                            <div class="msg_content">
+                                今天天气不错!
+                                <img class="mypic" src="/images/bg2.jpg">
+                            </div>
+                            <span><button>点赞</button></span>
+                            <span><button>评论</button></span>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row item_msg">
                     <div class="col-sm-12 col-xs-12 message">
@@ -125,14 +143,10 @@
                                 今天天气不错!
                                 <img class="mypic" src="/images/bg2.jpg">
                             </div>
-                                <span>点赞</span>
-                                <span>评论</span>
+                                <span><button>点赞</button></span>
+                                <span><button>评论</button></span>
                             </div>
-
-
                     </div>
-
-
                 </div>
                 <div class="row item_msg" >
                     <div class="col-sm-12 col-xs-12 message">
@@ -145,14 +159,10 @@
                                 今天天气不错!
                                 <img class="mypic" src="/images/bg2.jpg">
                             </div>
-                            <span>点赞</span>
-                            <span>评论</span>
+                            <span><button>点赞</button></span>
+                            <span><button>评论</button></span>
                         </div>
-
-
                     </div>
-
-
                 </div>
             </div>
 
@@ -277,7 +287,7 @@
                 }
                 $.ajax({
                     type:"POST",//提交数据的类型 POST/GET
-                    url:"/user/home/post",//提交的网址
+                    url:"/user/home",//提交的网址
                     data:{"content":content,"time":time,"id":1,"thumb_up":0},//提交的数据
                     dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
                     success : function(data) {
@@ -332,13 +342,5 @@
             })
         })
     </script>
-
-
-        welcome to houlang weibo!
-        这里是微博整体首页
-        <form th:action="@{/user/logout}" method="post">
-            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-            <input type="submit" value="logout">
-        </form>
 </body>
 </html>
