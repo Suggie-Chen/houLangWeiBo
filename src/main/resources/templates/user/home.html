@@ -131,10 +131,20 @@
 <!--                        <span><button>点赞</button> </span>-->
                         <span class="commentsAndThumbUps" th:id="${message.id}">
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
-    <!--                        <span  th:text="${thumb_up}">11</span>-->
                             <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumb_up}" >666</span>
-                            <span><button>评论</button></span>
+                            <span >
+                                <button type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" width="15" height="15">评论</button>
+                                 <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png"  width="13" height="13" alt="xinfeng.png">
+                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.thumb_up}" >666</span>
+                                <div th:id="'cmt'+${message.id}" class="collapse">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </div>
+                            </span>
                         </span>
+
+
                     </div>
                 </div>
             </div>
@@ -335,7 +345,7 @@
 </script>
 
 <!--点赞-->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>-->
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -374,6 +384,9 @@
 
 
 </script>
+
+
+<!--评论-->
 
 </body>
 </html>
