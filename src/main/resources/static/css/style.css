@@ -5,6 +5,20 @@ body{
    	background-attachment: fixed;
 	font-family: tahoma,"microsoft yahei","\5FAE\8F6F\96C5\9ED1"!important;
 }
+#sort{
+	background-color:rgba(256,256,256,1);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 110px;
+	padding-right: 110px;
+	margin-top: 5px;
+	margin-bottom: 2px;
+	font-size: 15px;
+}
+/*.sort_condition{*/
+/*	width: 100px;*/
+/*}*/
+
 .navbar-right a{
 	color: #444
 }

@@ -115,6 +115,14 @@
                 </form>
             </div>
 
+            <div class="row" id="sort">
+                    <a th:href="@{/user/home(sort_method=time)}">按时间排序</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/user/home(sort_method=thumbUp)}">按点赞数排序</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/user/home(sort_method=commentNum)}">按评论数排序</a>
+            </div>
+
             <!--th显示微博-->
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
@@ -128,8 +136,9 @@
                             <img class="mypic" src="/images/bg2.jpg">
                         </div>
                         <span><button>点赞</button></span>
-                        <span th:text="${thumb_up}">11</span>
+                        <span th:text="${message.thumbUp}">11</span>
                         <span><button>评论</button></span>
+                        <span th:text="${message.commentNum}">11</span>
                     </div>
                 </div>
             </div>
@@ -181,27 +190,27 @@
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#英语四六级#</span>
-                    <span class="pull-right item_num">34.6亿</span>
+                    <span class="pull-right item_num">1亿</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#冬至吃饺子#</span>
-                    <span class="pull-right item_num">2.6亿</span>
+                    <span class="pull-right item_num">5000万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#北京邮电大学#</span>
-                    <span class="pull-right item_num">10.4亿</span>
+                    <span class="pull-right item_num">3600万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#spring boot#</span>
-                    <span class="pull-right item_num">1.5亿</span>
+                    <span class="pull-right item_num">3000万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#java#</span>
-                    <span class="pull-right item_num">1.1亿</span>
+                    <span class="pull-right item_num">2500万</span>
                 </div>
                 <hr style="margin: 0;padding: 0;width: 100%">
 
@@ -272,7 +281,7 @@
             $.ajax({
                 type:"POST",//提交数据的类型 POST/GET
                 url:"/user/home",//提交的网址
-                data:{"content":content,"time":time,"thumb_up":0},//提交的数据
+                data:{"content":content,"time":time,"thumbUp":0,"comment_num":0},//提交的数据
                 dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
                 success : function(data) {
                     $("#content").empty(); // 清空resText里面的所有内容
@@ -285,12 +294,12 @@
 
         //添加表情包1
         for (var i = 1; i < 60; i++) {
-            var a='images/f'+i.toString();
+            var a='images/f'+i;
             $(".emoji_1").append("<img src=" + a + ".png style='width:35px;height:35px' >");
         }
         //添加表情包2
         for (var i = 1; i < 61; i++) {
-            var a='images/h'+i.toString();
+            var a='images/h'+i;
             $(".emoji_2").append("<img src=" + a + ".png style='width:35px;height:35px' >");
         }
 

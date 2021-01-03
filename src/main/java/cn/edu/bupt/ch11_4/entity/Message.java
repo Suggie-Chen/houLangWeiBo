@@ -17,7 +17,8 @@ public class Message {
     private String name;       //用户名
     private Date time;         //发布时间
     private String content;    //正文
-    private Integer thumb_up;  //点赞数
+    private Integer thumbUp;  //点赞数
+    private Integer commentNum; //评论数
 
 //    @Lob
 //    @Basic(fetch = FetchType.LAZY)

@@ -40,17 +40,16 @@
                 </div>
             </form>
 
-            <div class="collapse navbar-collapse" id="my-navbar-collapse">
+            <ul class="collapse navbar-collapse" id="my-navbar-collapse">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/user/home}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;首页</a></li>
 
-                    <li class="dropdown">
+                    <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             设置 <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <!--                            <li><a href="#">退出登录</a></li>-->
                             <form th:action="@{/user/logout}" method="post">
                                 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                                 <input type="submit" value="退出登录">
@@ -58,8 +57,7 @@
                         </ul>
                     </li>
                 </ul>
-
-            </div>
+            </ul>
 
         </div>
         <hr style="margin: 0;padding: 0;color:#222;width: 100%">
@@ -93,15 +91,23 @@
                 <div class="col-md-2">
                     <span class="sort">博客 123</span>
                 </div>
-                <div class="col-md-2 dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        按时间排序<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">按点赞数排序</a></li>
-                    </ul>
-                </div>
+<!--                <div class="col-md-2 dropdown">-->
+<!--                    <a th:href="@{/user/personal(sort_method=time)" class="dropdown-toggle" data-toggle="dropdown">-->
+<!--                        按时间排序<b class="caret"></b>-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a></li>-->
+<!--                        <li><a th:href="@{/user/personal(sort_method=commentNum)}">按评论数排序</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
+        </div>
+        <div class="container container_bg" id="sort">
+            <a th:href="@{/user/personal(sort_method=time)}">按时间排序</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a th:href="@{/user/personal(sort_method=commentNum)}">按评论数排序</a>
         </div>
     </div>
 
@@ -118,23 +124,26 @@
                         <img class="mypic" src="/images/bg2.jpg">
                     </div>
                     <span><button>点赞</button></span>
-                    <span th:text="${thumb_up}">11</span>
+                    <span th:text="${message.thumbUp}">11</span>
                     <span><button>评论</button></span>
+                    <span th:text="${message.commentNum}">11</span>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div align="center">
-        <a th:href="@{/user/home(start=0)}">[首页]</a>
-        <a th:if="${not messages.isFirst()}" th:href="@{/user/home(start=${messages.number-1})}">[上页]</a>
-        <a th:if="${not messages.isLast()}" th:href="@{/user/home(start=${messages.number+1})}">[下页]</a>
-        <a th:href="@{/user/home(start=${messages.totalPages-1})}">[末页]</a>
+        <a th:href="@{/user/personal(start=0)}">[首页]</a>
+        <a th:if="${not messages.isFirst()}" th:href="@{/user/personal(start=${messages.number-1})}">[上页]</a>
+        <a th:if="${not messages.isLast()}" th:href="@{/user/personal(start=${messages.number+1})}">[下页]</a>
+        <a th:href="@{/user/personal(start=${messages.totalPages-1})}">[末页]</a>
     </div>
 
     <div class="jumbotron text-center" style="margin-bottom:0">
         <p>都被你看完啦，已经到底啦~</p>
     </div>
+
+    <script src="/js/jquery-3.1.0.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

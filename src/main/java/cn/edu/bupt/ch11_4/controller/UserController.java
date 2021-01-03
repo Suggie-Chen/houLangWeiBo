@@ -43,14 +43,15 @@ public class UserController {
     @GetMapping("/home")
     String home(Model model,
                 @RequestParam(value = "start",defaultValue = "0") Integer start,
-                @RequestParam(value = "limit",defaultValue = "9") Integer limit)
+                @RequestParam(value = "limit",defaultValue = "9") Integer limit,
+                @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
     {
         //得到当前用户名
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uname = uid.getUsername();
 
         start = start <0 ? 0 :start;
-        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
         Pageable pageable = PageRequest.of(start,limit,sort);
         Page<Message> messages = messageRepository.findAll(pageable);
         model.addAttribute("messages",messages);
@@ -60,46 +61,37 @@ public class UserController {
     @PostMapping("/home")
     void get_message(@RequestParam(value = "content") String content,
                      @RequestParam(value = "time") Date time,
-                     @RequestParam(value = "thumb_up") Integer thumb_up) {
+                     @RequestParam(value = "thumbUp") Integer thumbUp,
+                     @RequestParam(value = "comment_num") Integer comment_num) {
 //        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         //获取当前用户id
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
         String uname = uid.getUsername();
 
-        System.out.println(userid);
-        System.out.println(uname);
-        System.out.println(time);
-        System.out.println(content);
-        System.out.println(thumb_up);
-
         Message m = new Message();
         m.setContent(content);
         m.setTime(time);
         m.setUserid(userid);
-        m.setThumb_up(thumb_up);
+        m.setThumbUp(thumbUp);
         m.setName(uname);
+        m.setCommentNum(comment_num);
         messageRepository.save(m);
     }
 
     @GetMapping("/personal")
     String personal(Model model,
                 @RequestParam(value = "start",defaultValue = "0") Integer start,
-                @RequestParam(value = "limit",defaultValue = "9") Integer limit)
+                @RequestParam(value = "limit",defaultValue = "9") Integer limit,
+                @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
     {
         //得到当前用户名
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uname = uid.getUsername();
+        System.out.println(sort_method);
 
-//        start = start <0 ? 0 :start;
-//        Sort sort = Sort.by(Sort.Direction.DESC,"time");
-//        Pageable pageable = PageRequest.of(start,limit,sort);
-//        Page<Message> messages = messageRepository.findAll(pageable);
-//        model.addAttribute("messages",messages);
-//        model.addAttribute("uname", uname);
-//        return "user/personal";
         start = start <0 ? 0 :start;
-        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
         Pageable pageable = PageRequest.of(start,limit,sort);
         Page<Message> messages = messageRepository.findByName(uname, pageable);
         model.addAttribute("messages",messages);
