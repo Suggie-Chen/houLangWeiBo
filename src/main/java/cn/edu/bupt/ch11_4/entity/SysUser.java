@@ -31,6 +31,10 @@ public class SysUser implements UserDetails {
 //    @OneToMany(mappedBy = "sysuser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private Set<Message> messages = new ArraySet<Message>();
 
+//    @OneToMany(mappedBy = "sysuser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private List<Message> messages = new ArrayList<Message>();
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();

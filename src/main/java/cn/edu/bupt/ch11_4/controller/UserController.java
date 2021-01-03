@@ -16,15 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 //import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -107,6 +105,8 @@ public class UserController {
         return "user/personal";
     }
 
+
+
     @GetMapping("/login/**")
     String login(Model model){
         return "login";
@@ -142,6 +142,24 @@ public class UserController {
             System.out.println("注册成功处理=============");
             return "redirect:/user/login";
 
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/zan")
+    public String thumbUp(@RequestParam("msgid")String msgid) {
+        Long id = Long.parseLong(msgid);
+        Optional<Message> messageOptional = messageRepository.findById(id);
+        if (messageOptional.isPresent()) {
+            Message message = messageOptional.get();
+            Integer num = message.getThumb_up();
+            num=num+1;
+            String ns = num.toString();
+            message.setThumb_up(num);
+            messageRepository.save(message);
+            return ns;
+        } else {
+            return "failure";
         }
     }
 

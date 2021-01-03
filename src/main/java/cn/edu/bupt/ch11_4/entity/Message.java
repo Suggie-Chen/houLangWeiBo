@@ -27,7 +27,5 @@ public class Message {
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments = new ArrayList<Comment>();
 
-//    @ManyToOne
-//    @JoinColumn
-//    private SysUser sysuser;
+
 }

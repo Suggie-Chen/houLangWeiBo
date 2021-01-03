@@ -118,6 +118,7 @@
             <!--th显示微博-->
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
+                    <span  th:text=${message.id}>id</span>
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
@@ -127,9 +128,13 @@
                             今天天气不错!
                             <img class="mypic" src="/images/bg2.jpg">
                         </div>
-                        <span><button>点赞</button></span>
-                        <span th:text="${thumb_up}">11</span>
-                        <span><button>评论</button></span>
+<!--                        <span><button>点赞</button> </span>-->
+                        <span class="commentsAndThumbUps" th:id="${message.id}">
+                            <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
+    <!--                        <span  th:text="${thumb_up}">11</span>-->
+                            <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumb_up}" >666</span>
+                            <span><button>评论</button></span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -153,6 +158,7 @@
         </div>
 
 
+<!--   右侧的热门话题-->
         <div class="col-sm-3 col-xs-12 part_right">
             <div class="row text-center inform">
                 <img src="/images/icon.png">
@@ -220,6 +226,7 @@
     </div>
 
 </div>
+
 <script src="/js/jquery-3.1.0.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -326,5 +333,47 @@
         })
     })
 </script>
+
+<!--点赞-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $(".zan").click(function (event)
+            //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+        {
+            var imgid =event.target.id
+            console.log("imgid=",imgid)
+            // var v_id2 = $(this).attr("id");
+            // console.log("v_id2",v_id2);
+            msgid=imgid.slice(3);
+            console.log("msgid=",msgid);
+
+            $.ajax({
+                url: "/user/zan",
+                type: "GET",
+                data: {"msgid":msgid},
+                //dataType: "json",
+
+                success: function (result) {
+                    $("#zanNum"+msgid).html(result)
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    /*错误信息处理*/
+                    alert("进入error---");
+                    alert("状态码：" + xhr.status);
+                    alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+                    alert("错误信息:" + xhr.statusText);
+                    alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
+                    alert("请求状态：" + textStatus);
+                    alert(errorThrown);
+                }
+            })
+        })
+    })
+
+
+</script>
+
 </body>
 </html>
