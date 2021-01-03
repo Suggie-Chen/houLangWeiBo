@@ -60,7 +60,7 @@ public class UserController {
     void get_message(@RequestParam(value = "content") String content,
                      @RequestParam(value = "time") Date time,
                      @RequestParam(value = "thumbUp") Integer thumbUp,
-                     @RequestParam(value = "comment_num") Integer comment_num) {
+                     @RequestParam(value = "cmtNum") Integer cmtNum) {
 //        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         //获取当前用户id
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -73,7 +73,7 @@ public class UserController {
         m.setUserid(userid);
         m.setThumbUp(thumbUp);
         m.setName(uname);
-        m.setCommentNum(comment_num);
+        m.setCmtNum(cmtNum);
         messageRepository.save(m);
     }
 
@@ -144,10 +144,10 @@ public class UserController {
         Optional<Message> messageOptional = messageRepository.findById(id);
         if (messageOptional.isPresent()) {
             Message message = messageOptional.get();
-            Integer num = message.getThumb_up();
+            Integer num = message.getThumbUp();
             num=num+1;
             String ns = num.toString();
-            message.setThumb_up(num);
+            message.setThumbUp(num);
             messageRepository.save(message);
             return ns;
         } else {

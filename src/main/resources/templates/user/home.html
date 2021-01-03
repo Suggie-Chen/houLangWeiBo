@@ -120,7 +120,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a th:href="@{/user/home(sort_method=thumbUp)}">按点赞数排序</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a th:href="@{/user/home(sort_method=commentNum)}">按评论数排序</a>
+                    <a th:href="@{/user/home(sort_method=cmtNum)}">按评论数排序</a>
             </div>
 
             <!--th显示微博-->
@@ -139,11 +139,11 @@
 <!--                        <span><button>点赞</button> </span>-->
                         <span class="commentsAndThumbUps" th:id="${message.id}">
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
-                            <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumb_up}" >666</span>
+                            <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
                             <span >
                                 <button type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" width="15" height="15">评论</button>
                                  <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png"  width="13" height="13" alt="xinfeng.png">
-                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.thumb_up}" >666</span>
+                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
                                 <div th:id="'cmt'+${message.id}" class="collapse">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             </div>
-
+<!--图片图片图片-->
             <div class="row item_msg">
                 <div class="col-sm-12 col-xs-12 message">
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
@@ -205,27 +205,27 @@
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#英语四六级#</span>
-                    <span class="pull-right item_num">34.6亿</span>
+                    <span class="pull-right item_num">1亿</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#冬至吃饺子#</span>
-                    <span class="pull-right item_num">2.6亿</span>
+                    <span class="pull-right item_num">5000万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#北京邮电大学#</span>
-                    <span class="pull-right item_num">10.4亿</span>
+                    <span class="pull-right item_num">3600万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#spring boot#</span>
-                    <span class="pull-right item_num">1.5亿</span>
+                    <span class="pull-right item_num">3000万</span>
                 </div>
 
                 <div class="col-sm-12 item_hot">
                     <span class="pull-left">#java#</span>
-                    <span class="pull-right item_num">1.1亿</span>
+                    <span class="pull-right item_num">2500万</span>
                 </div>
                 <hr style="margin: 0;padding: 0;width: 100%">
 
@@ -297,7 +297,7 @@
             $.ajax({
                 type:"POST",//提交数据的类型 POST/GET
                 url:"/user/home",//提交的网址
-                data:{"content":content,"time":time,"thumb_up":0},//提交的数据
+                data:{"content":content,"time":time,"thumbUp":0,"cmtNum":0},//提交的数据
                 dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
                 success : function(data) {
                     $("#content").empty(); // 清空resText里面的所有内容
@@ -310,12 +310,12 @@
 
         //添加表情包1
         for (var i = 1; i < 60; i++) {
-            var a='images/f'+i.toString();
+            var a='images/f'+i;
             $(".emoji_1").append("<img src=" + a + ".png style='width:35px;height:35px' >");
         }
         //添加表情包2
         for (var i = 1; i < 61; i++) {
-            var a='images/h'+i.toString();
+            var a='images/h'+i;
             $(".emoji_2").append("<img src=" + a + ".png style='width:35px;height:35px' >");
         }
 
