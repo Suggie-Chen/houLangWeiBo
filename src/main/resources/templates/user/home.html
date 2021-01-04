@@ -89,6 +89,8 @@
                                     <input type="file" name="" class="select_Img" accept=".png, .jpg, .jpeg" style="display: none">
 <!--                                    <img id="preview_pic" class="preview" src=""  style='width:100px;height:70px'>-->
                                     <img id="preview_pic" class="preview" src="">
+<!--                                    <img id="delpic" src="/images/xf.png"  width="13" height="13" alt="del.png">-->
+                                    <a id="delpic" href="#">X</a>
                                 </span>
                             <div class="myEmoji">
                                 <ul id="myTab" class="nav nav-tabs">
@@ -134,7 +136,8 @@
                         <small class="date" style="color:#999">刚刚</small>
                         <div class="msg_content">
                         </div>
-                        <br>
+                        <img class="mypic">
+                        <br><br>
                         <span class="commentsAndThumbUps">
                             <img class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span class="zanNum" >0</span>
@@ -153,29 +156,52 @@
             <!--th显示微博-->
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
+                    <span  th:text=${message.id}>id</span>
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
                         <br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
-<!--                        <span  th:text=${message.id} style="color:white;">id</span>-->
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
                             <img class="mypic" src="/images/bg2.jpg">
                         </div>
-<!--                        <span><button>点赞</button> </span>-->
-                        <br>
-                        <span class="commentsAndThumbUps" th:id="${message.id}">
+                        <!--                        <span><button>点赞</button> </span>-->
+                        <span class="container" th:id="${message.id}">
+
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
-                            <span >
-                                <button type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" width="15" height="15">评论</button>
-                                 <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png"  width="13" height="13" alt="xinfeng.png">
-                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
+
+                            <span>
+                                <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
+                                <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
+
+                                <!--                                <form hidden="false"></form>-->
+                                <!--                                <button th:id="'btn'+${message.id}" type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" th:formaction="/user/comment">评论</button>-->
                                 <div th:id="'cmt'+${message.id}" class="collapse">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                     <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
+                                        <div class="form-group">
+<!--                                                <div contenteditable="true" th:id="'cmtContent'+${message.id}" class="form-control "></div>-->
+                                            <input  type="text" name="content"/>
+                                            <!--                                            <div class="col-sm-12" style="margin-top: 12px;">-->
+                                            <!--                                                <button type="button" th:id="'cmtSend'+${message.id}" class="btn btn-default pull-right disabled" style="color:lightskyblue">评论</button>-->
+                                            <!--                                            </div>-->
+                                            <input type="hidden"  name="msgId" th:value="${message.id}" />
+                                            <input type="submit" name="评论" />
+                                        </div>
+                                    </form>
+<!--                                    <tr th:each="cmt:${comments}" >-->
+<!--                                        <td th:text="${cmt.id}">评论id</td>-->
+<!--                                        <td th:text="${cmt.publisherId}">发布者id</td>-->
+<!--                                        <td th:text="${cmt.content}">内容</td>-->
+<!--                                        <td th:text="${cmt.time}">时间</td>-->
+<!--                                    </tr>-->
+                                    <div th:id="'text'+${message.id}">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                                     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    </div>
+
                                 </div>
                             </span>
                         </span>
@@ -184,7 +210,7 @@
                     </div>
                 </div>
             </div>
-<!--图片图片图片-->
+<!--示例微博-->
             <div class="row item_msg" style="display:none">
                 <div class="col-sm-12 col-xs-12 message">
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
@@ -311,7 +337,7 @@
                 return url ;
             }
 
-            var objUrl;   //存放上传图片路径
+            var objUrl="#";   //存放上传图片路径
             $('.select_Img').on('change',function(){//图片上传
                 // this.value = null;//解决无法上传相同图片的问题
                 // alert("ok");
@@ -321,41 +347,29 @@
 
                 objUrl = getObjectURL(fileList[0]) ;
                 if (objUrl) {
+                    $('#preview_pic').show();
                     $('#preview_pic').attr('src',objUrl);
                     $('#preview_pic').attr('style','width:100px;height:70px');
                 }
 
-                // imgName.push(fileList[0].name);
-                // imgSrc.push(imgSrcI);
-                // imgFile.push(fileList[0]);
-
-                //用于展示添加的图片实现图片预览
-                // $('#preview_pic').html("");
-                // for(var a = 0; a < imgSrc.length; a++) {
-                //     var oldBox = $('#preview_pic').html();
-                //     $('#preview_pic').html(oldBox + '<li class="content-img-list-item"><img src="'+ imgSrc[a] +'" alt=""><a index="'+a+'" class="hide delete-btn"><i class="ico-delete"></i></a></li>');
-                // }
-                // alert(imgSrcI);
             })
 
+            $("#delpic").click(function (event)
+                //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+            {
+                objUrl="#";
+                $('#preview_pic').hide();
+            })
             //点击按钮发送内容
             $("#send").click(function () {
                 var time = new Date();
-                //   var min = myDate.getMinutes();
-                //   var time = min-(min-1);
-                //   //alert(time);
+
                 var content = $("#content").text();
                 var uname = $("#uname").text();
 
-                //判断选择的是否是图片格式
-                // var imgPath = $(".imgPath").text();
-                //
-                // var start = imgPath.lastIndexOf(".");
-                // var postfix = imgPath.substring(start, imgPath.length).toUpperCase();
-
-                if (objUrl)
+                if (objUrl!="#")
                 {
-                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' src="+objUrl+" ></div></div></div>");
+                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "</div><img class='mypic' src="+objUrl+" ></div></div>");
                     $("#new_msg").show();
                 }
                 else {
@@ -365,7 +379,12 @@
                 $.ajax({
                     type:"POST",//提交数据的类型 POST/GET
                     url:"/user/home",//提交的网址
-                    data:{"content":content,"time":time,"thumbUp":0,"cmtNum":0},//提交的数据
+                    data:{
+                        "content":content,
+                        "time":time,
+                        "thumbUp":0,
+                        "cmtNum":0,
+                        "picUrl":objUrl},//提交的数据
                     dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
                     success : function(data) {
                         $("#content").empty(); // 清空resText里面的所有内容
@@ -463,7 +482,38 @@
 </script>
 
 
-<!--评论-->
+<!--显示评论-->
+<script language="javascript">
+    function sendId(event){
+        var img2Id =event.target.id
+        // var img2Id = $(this).attr("id");
+        console.log("img2Id",img2Id)
+        msgId=img2Id.slice(4);
+        console.log(msgId);
+        $.ajax({
+            url: "/user/comment",
+            type: "GET",
+            data: {"msgId":msgId},
+            success: function (result) {
+                $("#text" + msgId).html(result);
+//                console.log("result=",result)
+//                alert("刷新评论返回成功！")
+//                console.log("返回成功!");
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                /*错误信息处理*/
+                alert("进入error---");
+                alert("状态码：" + xhr.status);
+                alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+                alert("错误信息:" + xhr.statusText);
+                alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
+                alert("请求状态：" + textStatus);
+                alert(errorThrown);
+            }
+        })
+    }
+</script>
+
 
 </body>
 </html>

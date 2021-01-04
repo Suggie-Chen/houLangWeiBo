@@ -20,10 +20,12 @@ public class Message {
     private Integer thumbUp;  //点赞数
     private Integer cmtNum; //评论数
 
-//    @Lob
-//    @Basic(fetch = FetchType.LAZY)
-//    @Column(/*name="picture",*/ columnDefinition="longblob")
-//    private byte[] picture;    //图片
+    //图片
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name="picture", columnDefinition="longblob", nullable=true)
+    private byte[] Picture;
+
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments = new ArrayList<Comment>();

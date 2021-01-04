@@ -1,8 +1,10 @@
 package cn.edu.bupt.ch11_4.controller;
 
+import cn.edu.bupt.ch11_4.dao.CommentRepository;
 import cn.edu.bupt.ch11_4.dao.MessageRepository;
 import cn.edu.bupt.ch11_4.dao.SysRoleRepository;
 import cn.edu.bupt.ch11_4.dao.SysUserRepository;
+import cn.edu.bupt.ch11_4.entity.Comment;
 import cn.edu.bupt.ch11_4.entity.Message;
 import cn.edu.bupt.ch11_4.entity.SysRole;
 import cn.edu.bupt.ch11_4.entity.SysUser;
@@ -28,10 +30,15 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private MessageRepository messageRepository;
+    private CommentRepository commentRepository;
 
     @Autowired(required = false)
     public void setMessageRepository(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
+    }
+    @Autowired(required = false)
+    public void setCommentRepository(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
     @Autowired
     SysUserRepository sysUserRepository;
@@ -60,7 +67,8 @@ public class UserController {
     void get_message(@RequestParam(value = "content") String content,
                      @RequestParam(value = "time") Date time,
                      @RequestParam(value = "thumbUp") Integer thumbUp,
-                     @RequestParam(value = "cmtNum") Integer cmtNum) {
+                     @RequestParam(value = "cmtNum") Integer cmtNum,
+                     @RequestParam(value = "picUrl") String picUrl) {
 //        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         //获取当前用户id
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -74,6 +82,14 @@ public class UserController {
         m.setThumbUp(thumbUp);
         m.setName(uname);
         m.setCmtNum(cmtNum);
+
+        if(picUrl==null)
+        {
+            m.setPicture(null);
+        }else {
+            m.setPicture(picUrl.getBytes());
+        }
+
         messageRepository.save(m);
     }
 
@@ -155,4 +171,62 @@ public class UserController {
         }
     }
 
+    //    @ResponseBody
+    @PostMapping("/comment")
+    public String comments(@RequestParam("msgId")String msgId,@RequestParam("content")String content,Model model){
+        //将评论存入数据库
+        System.out.println(msgId);
+        System.out.println(content);
+        Long msgid = Long.parseLong(msgId);
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userid = uid.getId();
+        String name=uid.getUsername();
+        System.out.println(userid);
+        Date time=new Date();
+        System.out.println(time);
+        Comment c = new Comment();
+        Optional<Message> messageOptional=messageRepository.findById(msgid);
+        if(messageOptional.isPresent()) {
+            c.setMessage(messageOptional.get());
+            Message messagetemp= messageOptional.get();
+            messagetemp.setCmtNum(messagetemp.getCmtNum()+1);
+            messageRepository.save(messagetemp);
+        }
+        c.setMsgId(msgid);
+        c.setContent(content);
+        c.setTime(time);
+        c.setPublisherName(name);
+        c.setPublisherId(userid);
+        commentRepository.save(c);
+
+//        显示消息
+//        List<Comment> commentsop = commentRepository.findByMsgId(msgid);
+//        if (commentsop.isPresent()) {
+//            Comment comments = commentsop.get();
+//            System.out.println(comments);
+//            model.addAttribute("comments", comments);
+//        }
+        List<Comment> comments=commentRepository.findByMsgId(msgid);
+//        System.out.println(comments);
+        model.addAttribute("comments", comments);
+        return "redirect:/user/home";
+    }
+
+//    @ResponseBody
+    @GetMapping("/comment")
+    public Object comment(@RequestParam("msgId")String msgId,Model model){
+        System.out.println(msgId);
+        Long id = Long.parseLong(msgId);
+//        Optional<Comment> commentsop = commentRepository.findByMsgId(id);
+//        if (commentsop.isPresent()) {
+//            Comment comments = commentsop.get();
+//            System.out.println(comments);
+//            model.addAttribute("comments",comments);
+        List<Comment> comments=commentRepository.findByMsgId(id);
+        model.addAttribute("comments", comments);
+            return "/user/comments";
+//        } else {
+//            return "/user/failure";
+//        }
+    }
 }
