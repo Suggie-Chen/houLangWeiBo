@@ -45,7 +45,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <!--                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Jennifer</a></li>-->
-                <li><a th:href="@{/user/personal}" ><i class="glyphicon glyphicon-user" th:text="${uname}">&nbsp;&nbsp;Jennifer</i></a></li>
+                <li><a th:href="@{/user/personal}" ><i class="glyphicon glyphicon-user" th:text="${uname}" id="uname">&nbsp;&nbsp;Jennifer</i></a></li>
                 <!--                    <li class="dropdown">-->
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -86,8 +86,9 @@
 
                             <span class="pic">图片	</span>
                             <span>
-                                    <input type="file" name="" class="select_Img" style="display: none">
-                                    <img class="preview" src="">
+                                    <input type="file" name="" class="select_Img" accept=".png, .jpg, .jpeg" style="display: none">
+<!--                                    <img id="preview_pic" class="preview" src=""  style='width:100px;height:70px'>-->
+                                    <img id="preview_pic" class="preview" src="">
                                 </span>
                             <div class="myEmoji">
                                 <ul id="myTab" class="nav nav-tabs">
@@ -123,20 +124,47 @@
                     <a th:href="@{/user/home(sort_method=cmtNum)}">按评论数排序</a>
             </div>
 
+            <!--新发布微博显示在最前面-->
+            <div class="row item_msg" id="new_msg" style="display:none">
+                <div class="col-sm-12 col-xs-12 message">
+                    <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+                    <div class="col-sm-10 col-xs-10">
+                        <span style="font-weight: bold;"}></span>
+                        <br>
+                        <small class="date" style="color:#999">刚刚</small>
+                        <div class="msg_content">
+                        </div>
+                        <br>
+                        <span class="commentsAndThumbUps">
+                            <img class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
+                            <span class="zanNum" >0</span>
+                            <span >
+                                <button type="button" class="btn btn-primary" data-toggle="collapse" width="15" height="15">评论</button>
+                                 <img class="xinfeng"  src="/images/xf.png"  width="13" height="13" alt="xinfeng.png">
+                                 <span class="cmtNum" >0</span>
+                                <div class="collapse">
+                                </div>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <!--th显示微博-->
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
-                    <span  th:text=${message.id}>id</span>
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
                         <br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
+<!--                        <span  th:text=${message.id} style="color:white;">id</span>-->
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
                             <img class="mypic" src="/images/bg2.jpg">
                         </div>
 <!--                        <span><button>点赞</button> </span>-->
+                        <br>
                         <span class="commentsAndThumbUps" th:id="${message.id}">
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
@@ -157,7 +185,7 @@
                 </div>
             </div>
 <!--图片图片图片-->
-            <div class="row item_msg">
+            <div class="row item_msg" style="display:none">
                 <div class="col-sm-12 col-xs-12 message">
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
@@ -248,107 +276,148 @@
 <script src="/js/jquery-3.1.0.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        $("#content").keyup(function () {
-            //判断输入的字符串长度
-            var content_len = $("#content").text().replace(/\s/g, "").length;
+    $(document).ready(function(){
+        // $(function () {
+            $("#content").keyup(function () {
+                //判断输入的字符串长度
+                var content_len = $("#content").text().replace(/\s/g, "").length;
 
-            $(".tips").text("已经输入" + content_len + "个字");
+                $(".tips").text("已经输入" + content_len + "个字");
 
-            if (content_len == 0) {
-                // alert(content);
-                $(".tips").text("");
-                $("#send").addClass("disabled");
-                return false;
-            } else {
-                $("#send").removeClass("disabled");
-            }
-        });
-
-        $(".pic").click(function () {
-            $(".select_Img").click();
-        })
-
-        //点击按钮发送内容
-        $("#send").click(function () {
-            var time = new Date();
-            //   var min = myDate.getMinutes();
-            //   var time = min-(min-1);
-            //   //alert(time);
-            var content = $("#content").text();
-            var uname = $("#uname").text();
-
-            //判断选择的是否是图片格式
-            var imgPath = $(".imgPath").text();
-            var start = imgPath.lastIndexOf(".");
-            var postfix = imgPath.substring(start, imgPath.length).toUpperCase();
-
-
-            if (imgPath != "") {
-
-                if (postfix != ".PNG" && postfix != ".JPG" && postfix != ".GIF" && postfix != ".JPEG") {
-                    alert("图片格式需为png,gif,jpeg,jpg格式");
+                if (content_len == 0) {
+                    // alert(content);
+                    $(".tips").text("");
+                    $("#send").addClass("disabled");
+                    return false;
                 } else {
-                    $(".item_msg").append("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' onerror='this.src='/images/bg_1.jpg' src='file:///" + imagesPath + "' ></div></div></div>");
-                }
-            } else {
-                $(".item_msg").append("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "</div></div></div>");
-            }
-            $.ajax({
-                type:"POST",//提交数据的类型 POST/GET
-                url:"/user/home",//提交的网址
-                data:{"content":content,"time":time,"thumbUp":0,"cmtNum":0},//提交的数据
-                dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
-                success : function(data) {
-                    $("#content").empty(); // 清空resText里面的所有内容
-                },
-                // error: function(){//请求出错处理
-                //     alert("发送出错");
-                // }
-            });
-        });
-
-        //添加表情包1
-        for (var i = 1; i < 60; i++) {
-            var a='images/f'+i;
-            $(".emoji_1").append("<img src=" + a + ".png style='width:35px;height:35px' >");
-        }
-        //添加表情包2
-        for (var i = 1; i < 61; i++) {
-            var a='images/h'+i;
-            $(".emoji_2").append("<img src=" + a + ".png style='width:35px;height:35px' >");
-        }
-
-
-        $(".emoji").click(function () {
-            $(".myEmoji").show();
-            //点击空白处隐藏弹出层
-            $(document).click(function (e) {
-                if (!$("#edit_form").is(e.target) && $("#edit_form").has(e.target).length === 0) {
-                    $(".myEmoji").hide();
+                    $("#send").removeClass("disabled");
                 }
             });
-        });
 
-        //将表情添加到输入框
-        $(".myEmoji img").each(function () {
-            $(this).click(function () {
-                var url = $(this)[0].src;
-                $('#content').append("<img src='" + url + "' style='width:25px;height:25px' >");
-                $("#send").removeClass("disabled");
+            $(".pic").click(function () {
+                $(".select_Img").click();
             })
-        })
 
-        //放大或缩小预览图片
-        $(".mypic").click(function () {
-            var oWidth = $(this).width(); //取得图片的实际宽度
-            var oHeight = $(this).height(); //取得图片的实际高度
-            if ($(this).height() != 200) {
-                $(this).height(200);
-            } else {
-                $(this).height(oHeight + 200 / oWidth * oHeight);
+            //getObjectURL方法用于获取本地图片的地址，使用该url可以显示图片
+            function getObjectURL(file) {
+                var url = null ;
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                } else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                } else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }
+                return url ;
             }
-        })
+
+            var objUrl;   //存放上传图片路径
+            $('.select_Img').on('change',function(){//图片上传
+                // this.value = null;//解决无法上传相同图片的问题
+                // alert("ok");
+
+                //这里创建3个数组，imgName、imgSrc、imgFile分别用于存放上传图片的名称、url地址以及图片流信息
+                var fileList = this.files;
+
+                objUrl = getObjectURL(fileList[0]) ;
+                if (objUrl) {
+                    $('#preview_pic').attr('src',objUrl);
+                    $('#preview_pic').attr('style','width:100px;height:70px');
+                }
+
+                // imgName.push(fileList[0].name);
+                // imgSrc.push(imgSrcI);
+                // imgFile.push(fileList[0]);
+
+                //用于展示添加的图片实现图片预览
+                // $('#preview_pic').html("");
+                // for(var a = 0; a < imgSrc.length; a++) {
+                //     var oldBox = $('#preview_pic').html();
+                //     $('#preview_pic').html(oldBox + '<li class="content-img-list-item"><img src="'+ imgSrc[a] +'" alt=""><a index="'+a+'" class="hide delete-btn"><i class="ico-delete"></i></a></li>');
+                // }
+                // alert(imgSrcI);
+            })
+
+            //点击按钮发送内容
+            $("#send").click(function () {
+                var time = new Date();
+                //   var min = myDate.getMinutes();
+                //   var time = min-(min-1);
+                //   //alert(time);
+                var content = $("#content").text();
+                var uname = $("#uname").text();
+
+                //判断选择的是否是图片格式
+                // var imgPath = $(".imgPath").text();
+                //
+                // var start = imgPath.lastIndexOf(".");
+                // var postfix = imgPath.substring(start, imgPath.length).toUpperCase();
+
+                if (objUrl)
+                {
+                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' src="+objUrl+" ></div></div></div>");
+                    $("#new_msg").show();
+                }
+                else {
+                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "</div></div></div>");
+                    $("#new_msg").show();
+                }
+                $.ajax({
+                    type:"POST",//提交数据的类型 POST/GET
+                    url:"/user/home",//提交的网址
+                    data:{"content":content,"time":time,"thumbUp":0,"cmtNum":0},//提交的数据
+                    dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
+                    success : function(data) {
+                        $("#content").empty(); // 清空resText里面的所有内容
+                    },
+                    // error: function(){//请求出错处理
+                    //     alert("发送出错");
+                    // }
+                });
+            });
+
+            //添加表情包1
+            for (var i = 1; i < 60; i++) {
+                var a='/images/f'+i;
+                $(".emoji_1").append("<img src=" + a + ".png style='width:35px;height:35px' >");
+            }
+            //添加表情包2
+            for (var i = 1; i < 61; i++) {
+                var a='/images/h'+i;
+                $(".emoji_2").append("<img src=" + a + ".png style='width:35px;height:35px' >");
+            }
+
+
+            $(".emoji").click(function () {
+                $(".myEmoji").show();
+                //点击空白处隐藏弹出层
+                $(document).click(function (e) {
+                    if (!$("#edit_form").is(e.target) && $("#edit_form").has(e.target).length === 0) {
+                        $(".myEmoji").hide();
+                    }
+                });
+            });
+
+            //将表情添加到输入框
+            $(".myEmoji img").each(function () {
+                $(this).click(function () {
+                    var url = $(this)[0].src;
+                    $('#content').append("<img src='" + url + "' style='width:25px;height:25px' >");
+                    $("#send").removeClass("disabled");
+                })
+            })
+
+            //放大或缩小预览图片
+            $(".mypic").click(function () {
+                var oWidth = $(this).width(); //取得图片的实际宽度
+                var oHeight = $(this).height(); //取得图片的实际高度
+                if ($(this).height() != 200) {
+                    $(this).height(200);
+                } else {
+                    $(this).height(oHeight + 200 / oWidth * oHeight);
+                }
+            })
+        // })
     })
 </script>
 
