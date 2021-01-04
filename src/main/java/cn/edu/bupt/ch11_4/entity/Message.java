@@ -30,8 +30,8 @@ public class Message {
 //    //图片
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name="picture", columnDefinition="longblob", nullable=true)
-    private byte[] Picture;
+//    @Column(name="picture", columnDefinition="longblob", nullable=true)
+//    private byte[] Picture;
 
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
