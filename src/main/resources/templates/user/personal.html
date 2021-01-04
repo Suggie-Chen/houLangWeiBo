@@ -69,14 +69,16 @@
                 <img src="/images/icon.png" style="border-radius: 50%; width: 15%; margin-top: 5% ">
             </p>
         </div>
+        <div class="pf_username" >
+            <h1 class="username" id="name" style="font-size:150%;font-weight: bold;" th:text="${uname}"></h1>
 
-        <div class="pf_username " >
-            <h1 class="username" style="font-size:150%" th:text="${uname}">后浪微博1号选手
-                <button type="button" class="btn btn-primary btn-lg"
-                        style="background:#31b0d5; border-color:#31b0d5; font-size: 10px">
-                    <span class="glyphicon glyphicon-ok"></span> 已关注
+            <button type="button" id="follow" data-target="#myModal"
+                    class="btn btn-info btn-sm"> 关注 TA
                 </button>
-            </h1>
+                    <button type="button"  id="unfollow" data-target="#myModal"
+                            class="btn btn-default btn-sm"> 取消关注
+                    </button>
+
         </div>
 
         <div class="container container_bg"
@@ -195,6 +197,55 @@
         })
 
 
+    </script>
+    <script>
+        $(document).ready(function () {
+            //点击: +关注
+            $("#follow").click(function () {
+                name =  String(getQueryVariable("name"));
+                $.ajax({
+                    type: "Post",
+                    data: "name="+name,
+                    url: "/user/follow",
+                    //contentType: "charset=utf-8",
+                    dataType: "text",
+                    success: function () {
+                        alert("关注成功！")
+                    },
+                    error: function (err) {
+                    }
+                });
+            });
+            //点击: 已关注
+            $("#unfollow").click(function () {
+                name =  String(getQueryVariable("name"));
+                $.ajax({
+                    type: "Post",
+                    data: "name="+name,
+                    url: "/user/unfollow",
+                    //contentType: "charset=utf-8",
+                    dataType: "text",
+                    success: function () {
+                        alert("取消关注！");
+                    },
+                    error: function () {
+                        alert(err);
+                    }
+                });
+            });
+            return false;
+        });
+
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
     </script>
 </body>
 </html>
