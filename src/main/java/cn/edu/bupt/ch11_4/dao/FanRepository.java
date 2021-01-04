@@ -1,13 +1,16 @@
 package cn.edu.bupt.ch11_4.dao;
 
 import cn.edu.bupt.ch11_4.entity.Fan;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+import java.util.Optional;
 
-public interface FanRepository {
-    //有问题，再想想
-    Fan findByXid(Long xid);
-    Fan findByXname(String xname);
-    Fan findByYid(Long yid);
-    Fan findByYname(String yname);
+public interface FanRepository extends JpaRepository<Fan,String> {
+
+    Optional<Fan> findByXname(String xname);
+
+    boolean existsByXnameAndYname(String xname,String yname);
+
+    Fan findByXnameAndYname(String uname, String name);
 }

@@ -45,7 +45,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <!--                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Jennifer</a></li>-->
-                <li><a th:href="@{/user/personal}" ><i class="glyphicon glyphicon-user" th:text="${uname}" id="uname">&nbsp;&nbsp;Jennifer</i></a></li>
+                <li><a th:href="@{/user/personal/self}" ><i class="glyphicon glyphicon-user" th:text="${uname}" id="uname">&nbsp;&nbsp;Jennifer</i></a></li>
                 <!--                    <li class="dropdown">-->
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -166,9 +166,9 @@
                         </div>
                         <br><br>
 <!--                        <div th:text="${message.picture}" style="display: none"></div>-->
-                        <button class="show_pic" th:id="'show_pic'+${message.id}">点击显示图片</button>
-                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片" style="display: none">
-                        <div th:id="'picture'+${message.id}" th:text="${message.picture}" ></div>
+<!--                        <button class="show_pic" th:id="'show_pic'+${message.id}">点击显示图片</button>-->
+<!--                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片" style="display: none">-->
+<!--                        <div th:id="'picture'+${message.id}" th:text="${message.picture}" ></div>-->
 <!--                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片">-->
                         <br><br>
                         <span class="commentsAndThumbUps" th:id="${message.id}">

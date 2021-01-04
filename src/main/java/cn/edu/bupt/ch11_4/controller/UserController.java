@@ -1,8 +1,10 @@
 package cn.edu.bupt.ch11_4.controller;
 
+import cn.edu.bupt.ch11_4.dao.FanRepository;
 import cn.edu.bupt.ch11_4.dao.MessageRepository;
 import cn.edu.bupt.ch11_4.dao.SysRoleRepository;
 import cn.edu.bupt.ch11_4.dao.SysUserRepository;
+import cn.edu.bupt.ch11_4.entity.Fan;
 import cn.edu.bupt.ch11_4.entity.Message;
 import cn.edu.bupt.ch11_4.entity.SysRole;
 import cn.edu.bupt.ch11_4.entity.SysUser;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private MessageRepository messageRepository;
+    private FanRepository fanRepository;
 
     @Autowired(required = false)
     public void setMessageRepository(MessageRepository messageRepository) {
@@ -62,8 +65,7 @@ public class UserController {
                      @RequestParam(value = "thumbUp") Integer thumbUp,
                      @RequestParam(value = "cmtNum") Integer cmtNum,
                      @RequestParam(value = "picUrl") String picUrl) {
-//        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
-        //获取当前用户id
+
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
         String uname = uid.getUsername();
@@ -87,28 +89,6 @@ public class UserController {
 
         messageRepository.save(m);
     }
-
-    @GetMapping("/personal")
-    String personal(Model model,
-                @RequestParam(value = "start",defaultValue = "0") Integer start,
-                @RequestParam(value = "limit",defaultValue = "9") Integer limit,
-                @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
-    {
-        //得到当前用户名
-        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String uname = uid.getUsername();
-        System.out.println(sort_method);
-
-        start = start <0 ? 0 :start;
-        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
-        Pageable pageable = PageRequest.of(start,limit,sort);
-        Page<Message> messages = messageRepository.findByName(uname, pageable);
-        model.addAttribute("messages",messages);
-        model.addAttribute("uname", uname);
-        return "user/personal";
-    }
-
-
 
     @GetMapping("/login/**")
     String login(Model model){
@@ -166,4 +146,114 @@ public class UserController {
         }
     }
 
+    //曲曲写的↓
+//    @GetMapping("/personal")
+//    String personal(Model model,
+//                    @RequestParam(value = "start",defaultValue = "0") Integer start,
+//                    @RequestParam(value = "limit",defaultValue = "9") Integer limit,
+//                    @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
+//    {
+//        //得到当前用户名
+//        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String uname = uid.getUsername();
+//        System.out.println(sort_method);
+//
+//        start = start <0 ? 0 :start;
+//        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
+//        Pageable pageable = PageRequest.of(start,limit,sort);
+//        Page<Message> messages = messageRepository.findByName(uname, pageable);
+//        model.addAttribute("messages",messages);
+//        model.addAttribute("uname", uname);
+//        return "user/personal";
+//    }
+
+    @GetMapping("/personal/self")     //点导航栏里的个人首页
+    String personal(Model model,
+                    @RequestParam(value = "start",defaultValue = "0") Integer start,
+                    @RequestParam(value = "limit",defaultValue = "9") Integer limit)
+    {
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        start = start <0 ? 0 :start;
+        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+        Pageable pageable = PageRequest.of(start,limit,sort);
+        Page<Message> messages = messageRepository.findByName(uname,pageable);
+        model.addAttribute("messages",messages);
+        model.addAttribute("uname", uname);
+        return "user/personal";
+    }
+
+    @GetMapping("/personal/**")     //点消息里的头像
+    String personal(Model model,
+                    @RequestParam(value = "start",defaultValue = "0") Integer start,
+                    @RequestParam(value = "limit",defaultValue = "9") Integer limit,
+                    @RequestParam("name") String name,
+                    @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
+    {
+        //得到当前用户名
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        start = start <0 ? 0 :start;
+        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
+        Pageable pageable = PageRequest.of(start,limit,sort);
+
+        if( uname.equals(name))    //登录成功的用户要看自己的个人首页
+        {
+            Page<Message> messages = messageRepository.findByName(uname, pageable);
+            model.addAttribute("messages",messages);
+            model.addAttribute("uname", uname);
+            return "user/personal";
+        }
+        else {                //登录成功的用户要看别人的个人首页
+            Page<Message> messages = messageRepository.findByName(name, pageable);
+            model.addAttribute("messages", messages);
+            model.addAttribute("uname", name);
+            return "user/personal";
+        }
+    }
+
+    @PostMapping("/follow")
+    public void follow(@RequestParam("name") String name)
+    {
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+        //判断是否已经关注了这个用户
+        Optional<Fan> fanOptional = fanRepository.findByXname(uname);
+        if (fanOptional.isPresent()) {
+            if(fanRepository.existsByXnameAndYname(uname, name)){ }
+            else{
+                Fan f = new Fan();
+                f.setXname(uname);
+                f.setYname(name);
+                fanRepository.save(f);
+            }
+        }
+        else{
+            Fan f = new Fan();
+            f.setXname(uname);
+            f.setYname(name);
+            fanRepository.save(f);
+        }
+    }
+
+    @PostMapping("/unfollow")
+    public void unfollow(@RequestParam("name") String name)
+    {
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+        //判断是否已经关注了这个用户
+        Optional<Fan> fanOptional = fanRepository.findByXname(uname);
+        if (fanOptional.isPresent()) {
+            if(fanRepository.existsByXnameAndYname(uname, name)){
+                Fan fan = fanOptional.get();
+                fanRepository.delete(fan);
+            }
+            else{
+            }
+        }
+        else{
+        }
+    }
 }
