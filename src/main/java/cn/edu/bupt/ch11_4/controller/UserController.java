@@ -60,13 +60,15 @@ public class UserController {
     void get_message(@RequestParam(value = "content") String content,
                      @RequestParam(value = "time") Date time,
                      @RequestParam(value = "thumbUp") Integer thumbUp,
-                     @RequestParam(value = "cmtNum") Integer cmtNum) {
+                     @RequestParam(value = "cmtNum") Integer cmtNum,
+                     @RequestParam(value = "picUrl") String picUrl) {
 //        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         //获取当前用户id
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
         String uname = uid.getUsername();
 
+        System.out.println(picUrl);
         Message m = new Message();
         m.setContent(content);
         m.setTime(time);
@@ -74,6 +76,15 @@ public class UserController {
         m.setThumbUp(thumbUp);
         m.setName(uname);
         m.setCmtNum(cmtNum);
+
+        if(picUrl.equals("#"))
+        {
+            m.setPicture(null);
+        }
+        else {
+            m.setPicture(picUrl.getBytes());
+        }
+
         messageRepository.save(m);
     }
 

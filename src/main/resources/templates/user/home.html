@@ -89,6 +89,8 @@
                                     <input type="file" name="" class="select_Img" accept=".png, .jpg, .jpeg" style="display: none">
 <!--                                    <img id="preview_pic" class="preview" src=""  style='width:100px;height:70px'>-->
                                     <img id="preview_pic" class="preview" src="">
+<!--                                    <img id="delpic" src="/images/xf.png"  width="13" height="13" alt="del.png">-->
+                                    <a id="delpic" href="#">X</a>
                                 </span>
                             <div class="myEmoji">
                                 <ul id="myTab" class="nav nav-tabs">
@@ -134,7 +136,8 @@
                         <small class="date" style="color:#999">刚刚</small>
                         <div class="msg_content">
                         </div>
-                        <br>
+<!--                        <img>-->
+                        <br><br>
                         <span class="commentsAndThumbUps">
                             <img class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span class="zanNum" >0</span>
@@ -158,13 +161,16 @@
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
                         <br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
-<!--                        <span  th:text=${message.id} style="color:white;">id</span>-->
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
-                            <img class="mypic" src="/images/bg2.jpg">
                         </div>
-<!--                        <span><button>点赞</button> </span>-->
-                        <br>
+                        <br><br>
+<!--                        <div th:text="${message.picture}" style="display: none"></div>-->
+                        <button class="show_pic" th:id="'show_pic'+${message.id}">点击显示图片</button>
+                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片" style="display: none">
+                        <div th:id="'picture'+${message.id}" th:text="${message.picture}" ></div>
+<!--                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片">-->
+                        <br><br>
                         <span class="commentsAndThumbUps" th:id="${message.id}">
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
@@ -184,7 +190,7 @@
                     </div>
                 </div>
             </div>
-<!--图片图片图片-->
+<!--示例微博-->
             <div class="row item_msg" style="display:none">
                 <div class="col-sm-12 col-xs-12 message">
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
@@ -194,7 +200,7 @@
                         <small class="date" style="color:#999">1分钟前</small>
                         <div class="msg_content">
                             今天天气不错!
-                            <img class="mypic" src="/images/bg2.jpg">
+                            <img class="mypic" src="/images/bg2.jpg" alt="无图片">
                         </div>
                         <span><button>点赞</button></span>
                         <span><button>评论</button></span>
@@ -311,51 +317,35 @@
                 return url ;
             }
 
-            var objUrl;   //存放上传图片路径
+            var objUrl="#";   //存放上传图片路径
             $('.select_Img').on('change',function(){//图片上传
-                // this.value = null;//解决无法上传相同图片的问题
-                // alert("ok");
-
                 //这里创建3个数组，imgName、imgSrc、imgFile分别用于存放上传图片的名称、url地址以及图片流信息
                 var fileList = this.files;
 
                 objUrl = getObjectURL(fileList[0]) ;
                 if (objUrl) {
+                    $('#preview_pic').show();
                     $('#preview_pic').attr('src',objUrl);
                     $('#preview_pic').attr('style','width:100px;height:70px');
                 }
-
-                // imgName.push(fileList[0].name);
-                // imgSrc.push(imgSrcI);
-                // imgFile.push(fileList[0]);
-
-                //用于展示添加的图片实现图片预览
-                // $('#preview_pic').html("");
-                // for(var a = 0; a < imgSrc.length; a++) {
-                //     var oldBox = $('#preview_pic').html();
-                //     $('#preview_pic').html(oldBox + '<li class="content-img-list-item"><img src="'+ imgSrc[a] +'" alt=""><a index="'+a+'" class="hide delete-btn"><i class="ico-delete"></i></a></li>');
-                // }
-                // alert(imgSrcI);
             })
 
+            $("#delpic").click(function (event)
+                //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+            {
+                objUrl="#";
+                $('#preview_pic').hide();
+            })
             //点击按钮发送内容
             $("#send").click(function () {
                 var time = new Date();
-                //   var min = myDate.getMinutes();
-                //   var time = min-(min-1);
-                //   //alert(time);
+
                 var content = $("#content").text();
                 var uname = $("#uname").text();
 
-                //判断选择的是否是图片格式
-                // var imgPath = $(".imgPath").text();
-                //
-                // var start = imgPath.lastIndexOf(".");
-                // var postfix = imgPath.substring(start, imgPath.length).toUpperCase();
-
-                if (objUrl)
+                if (objUrl != "#")
                 {
-                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "<img class='mypic' src="+objUrl+" ></div></div></div>");
+                    $("#new_msg").html("<div class='col-sm-12 col-xs-12 message' > <img src='/images/icon.png' class='col-sm-2 col-xs-2' style='border-radius: 50%'><div class='col-sm-10 col-xs-10'><span style='font-weight: bold;'>" + uname + "</span> <br><small class='date' style='color:#999'>刚刚</small><div class='msg_content'>" + content + "</div><img class='mypic' src="+objUrl+" ></div></div>");
                     $("#new_msg").show();
                 }
                 else {
@@ -365,7 +355,12 @@
                 $.ajax({
                     type:"POST",//提交数据的类型 POST/GET
                     url:"/user/home",//提交的网址
-                    data:{"content":content,"time":time,"thumbUp":0,"cmtNum":0},//提交的数据
+                    data:{
+                        "content":content,
+                        "time":time,
+                        "thumbUp":0,
+                        "cmtNum":0,
+                        "picUrl":objUrl},//提交的数据
                     dataType: "json",//"xml", "html", "script", "json", "jsonp", "text".//返回数据的格式
                     success : function(data) {
                         $("#content").empty(); // 清空resText里面的所有内容
@@ -461,8 +456,55 @@
 
 
 </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $(".show_pic").click(function (event)
+            //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+        {
+            var imgid =event.target.id;
+            console.log("imgid=",imgid);
+            // var v_id2 = $(this).attr("id");
+            // console.log("v_id2",v_id2);
+            msgid=imgid.slice(8);
+            console.log("msgid=",msgid);
+            $("#pic"+msgid).show();
+            // alert(this.message.picture);
+            p=$("#picture"+msgid).text();
+            console.log("p=",p);
+            document.getElementById("pic"+msgid).src = "data:image/jpg;base64,"+encodeURI(p);
+            // $.ajax({
+            //     url: "/user/zan",
+            //     type: "GET",
+            //     data: {"msgid":msgid},
+            //     //dataType: "json",
+            //
+            //     success: function (result) {
+            //         $("pic"+msgid).show();
+            //         $("pic"+msgid).html(result)
+            //     },
+            //     error: function (xhr, textStatus, errorThrown) {
+            //         /*错误信息处理*/
+            //         alert("进入error---");
+            //         alert("状态码：" + xhr.status);
+            //         alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+            //         alert("错误信息:" + xhr.statusText);
+            //         alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
+            //         alert("请求状态：" + textStatus);
+            //         alert(errorThrown);
+            //     }
+            // })
+        })
+    })
 
 
+</script>
+
+<!--<script type="text/javascript">-->
+
+<!--    document.getElementById("pic+msgid").src = "data:image/jpg;base64,"+encodeURI(this.message.picture);-->
+
+<!--</script>-->
 <!--评论-->
 
 </body>
