@@ -164,38 +164,35 @@
                     <div class="col-sm-10 col-xs-10">
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
                         <span><a th:href="'/user?name='+${uname}">链接在此</a></span>
-                        <br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
                         </div>
 
-                        <br><br>
                         <span class="commentsAndThumbUps" th:id="${message.id}">
-                        <!--                        <span><button>点赞</button> </span>-->
-                        <span class="container" th:id="${message.id}">
+                            <span class="container" th:id="${message.id}">
 
-                            <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
-                            <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
-
-                            <span>
-                                <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
-                                <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
-                                <div th:id="'cmt'+${message.id}" class="collapse">
-                                     <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
-                                        <div class="form-group">
-                                            <input  type="text" name="content" style="width: 88%"/>
-                                            <input type="hidden"  name="msgId" th:value="${message.id}" />
-                                            <input type="submit" name="comment" value="评论" style="color: #66afe9" />
+                                <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
+                                <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
+                                <span>
+                                    <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
+                                    <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
+                                    <div th:id="'cmt'+${message.id}" class="collapse">
+                                         <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
+                                            <div class="form-group">
+                                                <input  type="text" name="content" style="width: 88%"/>
+                                                <input type="hidden"  name="msgId" th:value="${message.id}" />
+                                                <input type="submit" name="comment" value="评论" style="color: #66afe9" />
+                                            </div>
+                                        </form>
+                                        <div th:id="'text'+${message.id}">
+                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                                         </div>
-                                    </form>
-                                    <div th:id="'text'+${message.id}">
-                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                    </div>
 
-                                </div>
+                                    </div>
+                                </span>
                             </span>
                         </span>
                     </div>
