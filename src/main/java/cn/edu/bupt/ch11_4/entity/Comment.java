@@ -18,7 +18,7 @@ public class Comment {
     private String content;   //文字内容
     private Date time;         //发布时间
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable=true)
     private Message message;

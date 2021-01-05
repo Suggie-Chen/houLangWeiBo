@@ -17,116 +17,116 @@
 
 </head>
 <body>
-    <nav class="navbar  navbar-fixed-top" role="navigation" style="background: #e0620d ;padding-top: 3px;height:50px;">
-        <div class="container-fluid" style="background: #fff;">
-            <div class="navbar-header ">
+<nav class="navbar  navbar-fixed-top" role="navigation" style="background: #e0620d ;padding-top: 3px;height:50px;">
+    <div class="container-fluid" style="background: #fff;">
+        <div class="navbar-header ">
                 <span class="navbar-brand " style="font-weight:normal;font-style: italic" href="#">
                     <img src="/images/logo.png" height="20" width="20" />微博</span>
 
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#my-navbar-collapse">
-                    <span class="sr-only">切换导航</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#my-navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="搜索博客">
+                <i class="glyphicon glyphicon-search btn_search"></i>
+                <!--  <button type="submit" class="btn btn-default">提交</button> -->
             </div>
+        </form>
 
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索博客">
-                    <i class="glyphicon glyphicon-search btn_search"></i>
-                    <!--  <button type="submit" class="btn btn-default">提交</button> -->
-                </div>
-            </form>
+        <ul class="collapse navbar-collapse" id="my-navbar-collapse">
 
-            <ul class="collapse navbar-collapse" id="my-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a th:href="@{/user/home}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;首页</a></li>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a th:href="@{/user/home}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;首页</a></li>
-
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            设置 <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <form th:action="@{/user/logout}" method="post">
-                                <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-                                <input type="submit" value="退出登录">
-                            </form>
-                        </ul>
-                    </li>
-                </ul>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        设置 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <form th:action="@{/user/logout}" method="post">
+                            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                            <input type="submit" value="退出登录">
+                        </form>
+                    </ul>
+                </li>
             </ul>
+        </ul>
 
-        </div>
-        <hr style="margin: 0;padding: 0;color:#222;width: 100%">
-    </nav>
+    </div>
+    <hr style="margin: 0;padding: 0;color:#222;width: 100%">
+</nav>
 
-    <div class="shadow text-center">
-        <div class="pf_photo" >
-            <p class="photo_wrap">
-                <img src="/images/icon.png" style="border-radius: 50%; width: 15%; margin-top: 5% ">
-            </p>
-        </div>
-        <div class="pf_username" >
-            <h1 class="username" id="name" style="font-size:150%;font-weight: bold;" th:text="${uname}"></h1>
+<div class="shadow text-center">
+    <div class="pf_photo" >
+        <p class="photo_wrap">
+            <img src="/images/icon.png" style="border-radius: 50%; width: 15%; margin-top: 5% ">
+        </p>
+    </div>
+    <div class="pf_username" >
+        <h1 class="username" id="name" style="font-size:150%;font-weight: bold;" th:text="${uname}"></h1>
 
-            <button type="button" id="follow" data-target="#myModal"
-                    class="btn btn-info btn-sm"> 关注 TA
-                </button>
-                    <button type="button"  id="unfollow" data-target="#myModal"
-                            class="btn btn-default btn-sm"> 取消关注
-                    </button>
+        <button type="button" id="follow" data-target="#myModal"
+                class="btn btn-info btn-sm"> 关注 TA
+        </button>
+        <button type="button"  id="unfollow" data-target="#myModal"
+                class="btn btn-default btn-sm"> 取消关注
+        </button>
 
-        </div>
-
-        <div class="container container_bg"
-             style="padding-top: 20px; padding-bottom: 20px;margin-bottom: 10px; font-size: 20px">
-            <div class="pf_opt row">
-                <div class="col-md-2 col-md-offset-2">
-                    <span class="sort">关注 123</span>
-                </div>
-                <div class="col-md-2">
-                    <span class="sort">粉丝 123</span>
-                </div>
-                <div class="col-md-2">
-                    <span class="sort">博客 123</span>
-                </div>
-<!--                <div class="col-md-2 dropdown">-->
-<!--                    <a th:href="@{/user/personal(sort_method=time)" class="dropdown-toggle" data-toggle="dropdown">-->
-<!--                        按时间排序<b class="caret"></b>-->
-<!--                    </a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        <li><a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a></li>-->
-<!--                        <li><a th:href="@{/user/personal(sort_method=cmtNum)}">按评论数排序</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-            </div>
-        </div>
-        <div class="container container_bg" id="sort">
-            <a th:href="@{/user/personal(sort_method=time)}">按时间排序</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a th:href="@{/user/personal(sort_method=cmtNum)}">按评论数排序</a>
-        </div>
     </div>
 
-    <div class="container container_bg"  style="margin-bottom: 15px">
-        <div class="row item_msg" th:each="message:${messages}">
-            <div class="col-sm-12 col-xs-12 message">
-                <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
-                <div class="col-sm-10 col-xs-10">
-                    <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
-                    <br>
-                    <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
-                    <div class="msg_content" th:text="${message.content}">
-                        今天天气不错!
-                        <img class="mypic" src="/images/bg2.jpg">
-                    </div>
-                    <br><br>
-                    <span class="commentsAndThumbUps" th:id="${message.id}">
+    <div class="container container_bg"
+         style="padding-top: 20px; padding-bottom: 20px;margin-bottom: 10px; font-size: 20px">
+        <div class="pf_opt row">
+            <div class="col-md-2 col-md-offset-2">
+                <span class="sort">关注 123</span>
+            </div>
+            <div class="col-md-2">
+                <span class="sort">粉丝 123</span>
+            </div>
+            <div class="col-md-2">
+                <span class="sort">博客 123</span>
+            </div>
+            <!--                <div class="col-md-2 dropdown">-->
+            <!--                    <a th:href="@{/user/personal(sort_method=time)" class="dropdown-toggle" data-toggle="dropdown">-->
+            <!--                        按时间排序<b class="caret"></b>-->
+            <!--                    </a>-->
+            <!--                    <ul class="dropdown-menu">-->
+            <!--                        <li><a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a></li>-->
+            <!--                        <li><a th:href="@{/user/personal(sort_method=cmtNum)}">按评论数排序</a></li>-->
+            <!--                    </ul>-->
+            <!--                </div>-->
+        </div>
+    </div>
+    <div class="container container_bg" id="sort">
+        <a th:href="@{/user/personal(name=${uname},sort_method=time)}">按时间排序</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a th:href="@{/user/personal(name=${uname},sort_method=thumbUp)}">按点赞数排序</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a th:href="@{/user/personal(name=${uname},sort_method=cmtNum)}">按评论数排序</a>
+    </div>
+</div>
+
+<div class="container container_bg"  style="margin-bottom: 15px">
+    <div class="row item_msg" th:each="message:${messages}">
+        <div class="col-sm-12 col-xs-12 message">
+            <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
+            <div class="col-sm-10 col-xs-10">
+                <a style="font-weight: bold;" th:text="${message.name}" th:href="@{/user/personal(name=${message.name})}">Jennifer</a>
+                <br>
+                <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
+                <div class="msg_content" th:text="${message.content}">
+                    今天天气不错!
+                    <img class="mypic" src="/images/bg2.jpg">
+                </div>
+                <br><br>
+                <span class="commentsAndThumbUps" th:id="${message.id}">
                             <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
                             <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
                             <span >
@@ -140,112 +140,112 @@
                                 </div>
                             </span>
                         </span>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div align="center">
-        <a th:href="@{/user/personal(start=0)}">[首页]</a>
-        <a th:if="${not messages.isFirst()}" th:href="@{/user/personal(start=${messages.number-1})}">[上页]</a>
-        <a th:if="${not messages.isLast()}" th:href="@{/user/personal(start=${messages.number+1})}">[下页]</a>
-        <a th:href="@{/user/personal(start=${messages.totalPages-1})}">[末页]</a>
-    </div>
+<div align="center">
+    <a th:href="@{/user/personal(start=0)}">[首页]</a>
+    <a th:if="${not messages.isFirst()}" th:href="@{/user/personal(start=${messages.number-1})}">[上页]</a>
+    <a th:if="${not messages.isLast()}" th:href="@{/user/personal(start=${messages.number+1})}">[下页]</a>
+    <a th:href="@{/user/personal(start=${messages.totalPages-1})}">[末页]</a>
+</div>
 
-    <div class="jumbotron text-center" style="margin-bottom:0">
-        <p>都被你看完啦，已经到底啦~</p>
-    </div>
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <p>都被你看完啦，已经到底啦~</p>
+</div>
 
-    <script src="/js/jquery-3.1.0.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <!--点赞-->
-    <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>-->
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script src="/js/jquery-3.1.0.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<!--点赞-->
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>-->
+<script type="text/javascript">
+    $(document).ready(function() {
 
-            $(".zan").click(function (event)
-                //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
-            {
-                var imgid =event.target.id
-                console.log("imgid=",imgid)
-                // var v_id2 = $(this).attr("id");
-                // console.log("v_id2",v_id2);
-                msgid=imgid.slice(3);
-                console.log("msgid=",msgid);
+        $(".zan").click(function (event)
+            //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+        {
+            var imgid =event.target.id
+            console.log("imgid=",imgid)
+            // var v_id2 = $(this).attr("id");
+            // console.log("v_id2",v_id2);
+            msgid=imgid.slice(3);
+            console.log("msgid=",msgid);
 
-                $.ajax({
-                    url: "/user/zan",
-                    type: "GET",
-                    data: {"msgid":msgid},
-                    //dataType: "json",
+            $.ajax({
+                url: "/user/zan",
+                type: "GET",
+                data: {"msgid":msgid},
+                //dataType: "json",
 
-                    success: function (result) {
-                        $("#zanNum"+msgid).html(result)
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        /*错误信息处理*/
-                        alert("进入error---");
-                        alert("状态码：" + xhr.status);
-                        alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
-                        alert("错误信息:" + xhr.statusText);
-                        alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
-                        alert("请求状态：" + textStatus);
-                        alert(errorThrown);
-                    }
-                })
+                success: function (result) {
+                    $("#zanNum"+msgid).html(result)
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    /*错误信息处理*/
+                    alert("进入error---");
+                    alert("状态码：" + xhr.status);
+                    alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+                    alert("错误信息:" + xhr.statusText);
+                    alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
+                    alert("请求状态：" + textStatus);
+                    alert(errorThrown);
+                }
             })
         })
+    })
 
 
-    </script>
-    <script>
-        $(document).ready(function () {
-            //点击: +关注
-            $("#follow").click(function () {
-                name =  String(getQueryVariable("name"));
-                $.ajax({
-                    type: "Post",
-                    data: "name="+name,
-                    url: "/user/follow",
-                    //contentType: "charset=utf-8",
-                    dataType: "text",
-                    success: function () {
-                        alert("关注成功！")
-                    },
-                    error: function (err) {
-                    }
-                });
+</script>
+<script>
+    $(document).ready(function () {
+        //点击: +关注
+        $("#follow").click(function () {
+            name =  String(getQueryVariable("name"));
+            $.ajax({
+                type: "Post",
+                data: "name="+name,
+                url: "/user/follow",
+                //contentType: "charset=utf-8",
+                dataType: "text",
+                success: function () {
+                    alert("关注成功！")
+                },
+                error: function (err) {
+                }
             });
-            //点击: 已关注
-            $("#unfollow").click(function () {
-                name =  String(getQueryVariable("name"));
-                $.ajax({
-                    type: "Post",
-                    data: "name="+name,
-                    url: "/user/unfollow",
-                    //contentType: "charset=utf-8",
-                    dataType: "text",
-                    success: function () {
-                        alert("取消关注！");
-                    },
-                    error: function () {
-                        alert(err);
-                    }
-                });
-            });
-            return false;
         });
+        //点击: 已关注
+        $("#unfollow").click(function () {
+            name =  String(getQueryVariable("name"));
+            $.ajax({
+                type: "Post",
+                data: "name="+name,
+                url: "/user/unfollow",
+                //contentType: "charset=utf-8",
+                dataType: "text",
+                success: function () {
+                    alert("取消关注！");
+                },
+                error: function () {
+                    alert(err);
+                }
+            });
+        });
+        return false;
+    });
 
-        function getQueryVariable(variable)
-        {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i=0;i<vars.length;i++) {
-                var pair = vars[i].split("=");
-                if(pair[0] == variable){return pair[1];}
-            }
-            return(false);
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
         }
-    </script>
+        return(false);
+    }
+</script>
 </body>
 </html>

@@ -86,13 +86,13 @@ public class UserController {
         m.setName(uname);
         m.setCmtNum(cmtNum);
 
-        if(picUrl.equals("#"))
-        {
-            m.setPicture(null);
-        }
-        else {
-            m.setPicture(picUrl.getBytes());
-        }
+//        if(picUrl.equals("#"))
+//        {
+//            m.setPicture(null);
+//        }
+//        else {
+//            m.setPicture(picUrl.getBytes());
+//        }
 
         messageRepository.save(m);
     }
@@ -213,24 +213,24 @@ public class UserController {
 //        return "user/personal";
 //    }
 
-    @GetMapping("/personal/self")     //点导航栏里的个人首页
-    String personal(Model model,
-                    @RequestParam(value = "start",defaultValue = "0") Integer start,
-                    @RequestParam(value = "limit",defaultValue = "9") Integer limit)
-    {
-        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String uname = uid.getUsername();
+//    @GetMapping("/personal/self")     //点导航栏里的个人首页
+//    String personal(Model model,
+//                    @RequestParam(value = "start",defaultValue = "0") Integer start,
+//                    @RequestParam(value = "limit",defaultValue = "9") Integer limit)
+//    {
+//        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String uname = uid.getUsername();
+//
+//        start = start <0 ? 0 :start;
+//        Sort sort = Sort.by(Sort.Direction.DESC,"time");
+//        Pageable pageable = PageRequest.of(start,limit,sort);
+//        Page<Message> messages = messageRepository.findByName(uname,pageable);
+//        model.addAttribute("messages",messages);
+//        model.addAttribute("uname", uname);
+//        return "user/personal";
+//    }
 
-        start = start <0 ? 0 :start;
-        Sort sort = Sort.by(Sort.Direction.DESC,"time");
-        Pageable pageable = PageRequest.of(start,limit,sort);
-        Page<Message> messages = messageRepository.findByName(uname,pageable);
-        model.addAttribute("messages",messages);
-        model.addAttribute("uname", uname);
-        return "user/personal";
-    }
-
-    @GetMapping("/personal/**")     //点消息里的头像
+    @GetMapping("/personal")     //点消息里的头像
     String personal(Model model,
                     @RequestParam(value = "start",defaultValue = "0") Integer start,
                     @RequestParam(value = "limit",defaultValue = "9") Integer limit,
@@ -245,19 +245,12 @@ public class UserController {
         Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
         Pageable pageable = PageRequest.of(start,limit,sort);
 
-        if( uname.equals(name))    //登录成功的用户要看自己的个人首页
-        {
-            Page<Message> messages = messageRepository.findByName(uname, pageable);
-            model.addAttribute("messages",messages);
-            model.addAttribute("uname", uname);
-            return "user/personal";
-        }
-        else {                //登录成功的用户要看别人的个人首页
-            Page<Message> messages = messageRepository.findByName(name, pageable);
-            model.addAttribute("messages", messages);
-            model.addAttribute("uname", name);
-            return "user/personal";
-        }
+
+        Page<Message> messages = messageRepository.findByName(name, pageable);
+        model.addAttribute("messages", messages);
+        model.addAttribute("uname", name);
+        return "user/personal";
+
     }
 
     @PostMapping("/follow")
