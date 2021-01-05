@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -162,8 +162,8 @@
 <!--                    <span  th:text=${message.id}>id</span>-->
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
-                        <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
-                        <span><a th:href="'/user?name='+${uname}">链接在此</a></span>
+<!--                        <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>-->
+                        <span style="font-weight: bold;"><a th:href="'/user?name='+${uname}"th:text="${message.name}">链接在此</a></span><br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
@@ -178,13 +178,15 @@
                                     <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
                                     <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
                                     <div th:id="'cmt'+${message.id}" class="collapse">
-                                         <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
-                                            <div class="form-group">
-                                                <input  type="text" name="content" style="width: 88%"/>
-                                                <input type="hidden"  name="msgId" th:value="${message.id}" />
-                                                <input type="submit" name="comment" value="评论" style="color: #66afe9" />
-                                            </div>
-                                        </form>
+                                        <div sec:authorize="hasRole('ROLE_USER')">
+                                             <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
+                                                <div class="form-group">
+                                                    <input  type="text" name="content" style="width: 88%"/>
+                                                    <input type="hidden"  name="msgId" th:value="${message.id}" />
+                                                    <input type="submit" name="comment" value="评论" style="color: #66afe9" />
+                                                </div>
+                                            </form>
+                                        </div>
                                         <div th:id="'text'+${message.id}">
                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
