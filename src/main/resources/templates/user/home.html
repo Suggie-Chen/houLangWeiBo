@@ -225,15 +225,15 @@
                 <h4 style="font-weight: bold;" th:text="${uname}">Jennifer</h4>
                 <div class="col-sm-12 my_inform">
                     <div class="col-sm-4 col-xs-4">
-                        <div>111</div>
-                        <div class="sort">关注</div>
+                        <div th:text="${follows}">111</div>
+                        <a class="sort" href="/user/follow">关注</a>
                     </div>
                     <div class="col-sm-4 col-xs-4">
-                        <div>111</div>
-                        <div class="sort">粉丝</div>
+                        <div th:text="${fans}">111</div>
+                        <a class="sort" href="/user/fan">粉丝</a>
                     </div>
                     <div class="col-sm-4 col-xs-4">
-                        <div>111</div>
+                        <div th:text="${welogs}">111</div>
                         <div class="sort">博客</div>
                     </div>
                 </div>
@@ -280,9 +280,12 @@
 
     <div align="center">
         <a th:href="@{/user/home(start=0)}">[首页]</a>
-        <a th:if="${not messages.isFirst()}" th:href="@{/user/home(start=${messages.number-1})}">[上页]</a>
-        <a th:if="${not messages.isLast()}" th:href="@{/user/home(start=${messages.number+1})}">[下页]</a>
-        <a th:href="@{/user/home(start=${messages.totalPages-1})}">[末页]</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a th:if="${not messages.isFirst()}" th:href="@{/user/home(sort_method=${sort},start=${messages.number-1})}">[上页]</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a th:if="${not messages.isLast()}" th:href="@{/user/home(sort_method=${sort},start=${messages.number+1})}">[下页]</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a th:href="@{/user/home(sort_method=${sort},start=${messages.totalPages-1})}">[末页]</a>
     </div>
 
 </div>

@@ -72,12 +72,8 @@
     <div class="pf_username" >
         <h1 class="username" id="name" style="font-size:150%;font-weight: bold;" th:text="${uname}"></h1>
 
-        <button type="button" id="follow" data-target="#myModal"
-                class="btn btn-info btn-sm"> 关注 TA
-        </button>
-        <button type="button"  id="unfollow" data-target="#myModal"
-                class="btn btn-default btn-sm"> 取消关注
-        </button>
+        <button type="button" id="follow" class="btn btn-info btn-sm"> 关注 TA</button>
+        <button type="button" id="unfollow" class="btn btn-default btn-sm"> 取消关注</button>
 
     </div>
 
@@ -85,23 +81,14 @@
          style="padding-top: 20px; padding-bottom: 20px;margin-bottom: 10px; font-size: 20px">
         <div class="pf_opt row">
             <div class="col-md-2 col-md-offset-2">
-                <span class="sort">关注 123</span>
+                <span class="sort">关注 <span th:text="${follows}">123</span></span>
             </div>
             <div class="col-md-2">
-                <span class="sort">粉丝 123</span>
+                <span class="sort">粉丝 <span th:text="${fans}">123</span></span>
             </div>
             <div class="col-md-2">
-                <span class="sort">博客 123</span>
+                <span class="sort">博客 <span th:text="${welogs}">123</span></span>
             </div>
-            <!--                <div class="col-md-2 dropdown">-->
-            <!--                    <a th:href="@{/user/personal(sort_method=time)" class="dropdown-toggle" data-toggle="dropdown">-->
-            <!--                        按时间排序<b class="caret"></b>-->
-            <!--                    </a>-->
-            <!--                    <ul class="dropdown-menu">-->
-            <!--                        <li><a th:href="@{/user/personal(sort_method=thumbUp)}">按点赞数排序</a></li>-->
-            <!--                        <li><a th:href="@{/user/personal(sort_method=cmtNum)}">按评论数排序</a></li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
         </div>
     </div>
     <div class="container container_bg" id="sort">
@@ -127,19 +114,31 @@
                 </div>
                 <br><br>
                 <span class="commentsAndThumbUps" th:id="${message.id}">
-                            <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
-                            <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
-                            <span >
-                                <button type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" width="15" height="15">评论</button>
-                                 <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png"  width="13" height="13" alt="xinfeng.png">
-                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
-                                <div th:id="'cmt'+${message.id}" class="collapse">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <span class="container" th:id="${message.id}">
+
+                        <img th:id="'img'+${message.id}" class="zan"  src="/images/zan.png"  width="13" height="13" alt="zan.png">
+                        <span th:id="'zanNum'+${message.id} " class="zanNum" th:text="${message.thumbUp}" >666</span>
+                        <span>
+                            <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
+                            <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
+                            <div th:id="'cmt'+${message.id}" class="collapse">
+                                 <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
+                                    <div class="form-group">
+                                        <input  type="text" name="content" style="width: 88%"/>
+                                        <input type="hidden"  name="msgId" th:value="${message.id}" />
+                                        <input type="submit" name="comment" value="评论" style="color: #66afe9" />
+                                    </div>
+                                </form>
+                                <div th:id="'text'+${message.id}">
+                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                                 </div>
-                            </span>
+
+                            </div>
                         </span>
+                    </span>
+                </span>
             </div>
         </div>
     </div>
@@ -147,9 +146,9 @@
 
 <div align="center">
     <a th:href="@{/user/personal(start=0)}">[首页]</a>
-    <a th:if="${not messages.isFirst()}" th:href="@{/user/personal(start=${messages.number-1})}">[上页]</a>
-    <a th:if="${not messages.isLast()}" th:href="@{/user/personal(start=${messages.number+1})}">[下页]</a>
-    <a th:href="@{/user/personal(start=${messages.totalPages-1})}">[末页]</a>
+    <a th:if="${not messages.isFirst()}" th:href="@{/user/personal(name=${uname},sort_method=${sort},start=${messages.number-1})}">[上页]</a>
+    <a th:if="${not messages.isLast()}" th:href="@{/user/personal(name=${uname},sort_method=${sort},start=${messages.number+1})}">[下页]</a>
+    <a th:href="@{/user/personal(name=${uname},sort_method=${sort},start=${messages.totalPages-1})}">[末页]</a>
 </div>
 
 <div class="jumbotron text-center" style="margin-bottom:0">
@@ -158,6 +157,7 @@
 
 <script src="/js/jquery-3.1.0.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+
 <!--点赞-->
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>-->
 <script type="text/javascript">
@@ -202,49 +202,69 @@
     $(document).ready(function () {
         //点击: +关注
         $("#follow").click(function () {
-            name =  String(getQueryVariable("name"));
+            var name =  $("#name").text();
+            // alert("name="+name);
             $.ajax({
-                type: "Post",
-                data: "name="+name,
-                url: "/user/follow",
+                type: "POST",
+                url: "/user/personal",
+                data: {"person":name,"type":1},
                 //contentType: "charset=utf-8",
-                dataType: "text",
-                success: function () {
-                    alert("关注成功！")
+                dataType: "json",
+                success: function (attention) {
+                    alert(attention);
                 },
-                error: function (err) {
+                error: function (attention) {
+                    alert(attention);
                 }
             });
         });
-        //点击: 已关注
+        //取消关注
         $("#unfollow").click(function () {
-            name =  String(getQueryVariable("name"));
+            var name =  $("#name").text();
             $.ajax({
-                type: "Post",
-                data: "name="+name,
-                url: "/user/unfollow",
+                type: "POST",
+                data: {"person":name,"type":0},
+                url: "/user/personal",
                 //contentType: "charset=utf-8",
-                dataType: "text",
-                success: function () {
-                    alert("取消关注！");
+                dataType: "json",
+                success: function (attention) {
+                    alert(attention);
                 },
-                error: function () {
-                    alert(err);
+                error: function (attention) {
+                    alert(attention);
                 }
             });
         });
-        return false;
     });
 
-    function getQueryVariable(variable)
-    {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-            if(pair[0] == variable){return pair[1];}
-        }
-        return(false);
+</script>
+<!--显示评论-->
+<script language="javascript">
+    function sendId(event){
+        var img2Id =event.target.id
+        // var img2Id = $(this).attr("id");
+        console.log("img2Id",img2Id)
+        msgId=img2Id.slice(4);
+        console.log(msgId);
+        $.ajax({
+            url: "/user/comment",
+            type: "GET",
+            data: {"msgId":msgId},
+            success: function (result) {
+                $("#text" + msgId).html(result);
+//                alert("刷新评论返回成功！")
+//                console.log("返回成功!");
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                /*错误信息处理*/
+                alert("状态码：" + xhr.status);
+                alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+                alert("错误信息:" + xhr.statusText);
+                alert("返回响应信息：" + xhr.responseText);//这里是详细的信息
+                alert("请求状态：" + textStatus);
+                alert(errorThrown);
+            }
+        })
     }
 </script>
 </body>

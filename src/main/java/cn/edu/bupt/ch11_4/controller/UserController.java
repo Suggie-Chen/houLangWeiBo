@@ -33,7 +33,7 @@ import java.util.Optional;
 public class UserController {
     private MessageRepository messageRepository;
     private CommentRepository commentRepository;
-    private FanRepository fanRepository;
+//    private FanRepository fanRepository;
 
     @Autowired(required = false)
     public void setMessageRepository(MessageRepository messageRepository) {
@@ -47,6 +47,8 @@ public class UserController {
     SysUserRepository sysUserRepository;
     @Autowired
     SysRoleRepository sysRoleRepository;
+    @Autowired
+    FanRepository fanRepository;
 
     @GetMapping("/home")
     String home(Model model,
@@ -62,8 +64,19 @@ public class UserController {
         Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
         Pageable pageable = PageRequest.of(start,limit,sort);
         Page<Message> messages = messageRepository.findAll(pageable);
+
         model.addAttribute("messages",messages);
         model.addAttribute("uname", uname);
+        model.addAttribute("sort",sort_method);
+
+        Integer follows, fans, welogs;
+        follows = fanRepository.countByXname(uname);
+        fans = fanRepository.countByYname(uname);
+        welogs = messageRepository.countByName(uname);
+        model.addAttribute("follows",follows);
+        model.addAttribute("fans",fans);
+        model.addAttribute("welogs",welogs);
+
         return "user/home";
     }
     @PostMapping("/home")
@@ -85,7 +98,6 @@ public class UserController {
         m.setThumbUp(thumbUp);
         m.setName(uname);
         m.setCmtNum(cmtNum);
-
 //        if(picUrl.equals("#"))
 //        {
 //            m.setPicture(null);
@@ -93,7 +105,6 @@ public class UserController {
 //        else {
 //            m.setPicture(picUrl.getBytes());
 //        }
-
         messageRepository.save(m);
     }
 
@@ -193,43 +204,6 @@ public class UserController {
         model.addAttribute("comments", comments);
         return "/user/comments";
     }
-    //曲曲写的↓
-//    @GetMapping("/personal")
-//    String personal(Model model,
-//                    @RequestParam(value = "start",defaultValue = "0") Integer start,
-//                    @RequestParam(value = "limit",defaultValue = "9") Integer limit,
-//                    @RequestParam(value = "sort_method",defaultValue = "time") String sort_method)
-//    {
-//        //得到当前用户名
-//        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String uname = uid.getUsername();
-//        System.out.println(sort_method);
-//
-//        start = start <0 ? 0 :start;
-//        Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
-//        Pageable pageable = PageRequest.of(start,limit,sort);
-//        Page<Message> messages = messageRepository.findByName(uname, pageable);
-//        model.addAttribute("messages",messages);
-//        model.addAttribute("uname", uname);
-//        return "user/personal";
-//    }
-
-//    @GetMapping("/personal/self")     //点导航栏里的个人首页
-//    String personal(Model model,
-//                    @RequestParam(value = "start",defaultValue = "0") Integer start,
-//                    @RequestParam(value = "limit",defaultValue = "9") Integer limit)
-//    {
-//        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String uname = uid.getUsername();
-//
-//        start = start <0 ? 0 :start;
-//        Sort sort = Sort.by(Sort.Direction.DESC,"time");
-//        Pageable pageable = PageRequest.of(start,limit,sort);
-//        Page<Message> messages = messageRepository.findByName(uname,pageable);
-//        model.addAttribute("messages",messages);
-//        model.addAttribute("uname", uname);
-//        return "user/personal";
-//    }
 
     @GetMapping("/personal")     //点消息里的头像
     String personal(Model model,
@@ -246,54 +220,89 @@ public class UserController {
         Sort sort = Sort.by(Sort.Direction.DESC,sort_method);
         Pageable pageable = PageRequest.of(start,limit,sort);
 
-
         Page<Message> messages = messageRepository.findByName(name, pageable);
         model.addAttribute("messages", messages);
         model.addAttribute("uname", name);
+        model.addAttribute("sort",sort_method);
+
+        Integer follows, fans, welogs;
+        follows = fanRepository.countByXname(name);
+        fans = fanRepository.countByYname(name);
+        welogs = messageRepository.countByName(name);
+        model.addAttribute("follows",follows);
+        model.addAttribute("fans",fans);
+        model.addAttribute("welogs",welogs);
+
         return "user/personal";
 
     }
 
-    @PostMapping("/follow")
-    public void follow(@RequestParam("name") String name)
+    @ResponseBody
+    @PostMapping("/personal")
+    public String follow(@RequestParam("person") String person,
+                         @RequestParam("type") Integer type)
     {
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uname = uid.getUsername();
         //判断是否已经关注了这个用户
-        Optional<Fan> fanOptional = fanRepository.findByXname(uname);
-        if (fanOptional.isPresent()) {
-            if(fanRepository.existsByXnameAndYname(uname, name)){ }
-            else{
+        String attention;   //回显信息
+
+        boolean flag=fanRepository.existsByXnameAndYname(uname, person);
+        if (type==1)  //关注
+        {
+            if (flag||uname.equals(person))
+            {
+                attention="已关注";
+                System.out.println("已关注");
+            }
+            else
+            {
                 Fan f = new Fan();
                 f.setXname(uname);
-                f.setYname(name);
+                f.setYname(person);
                 fanRepository.save(f);
+                attention="关注成功";
+                System.out.println("关注成功");
             }
         }
-        else{
-            Fan f = new Fan();
-            f.setXname(uname);
-            f.setYname(name);
-            fanRepository.save(f);
+        else    //取消关注
+        {
+            if (flag)
+            {
+                Fan f= fanRepository.findByXnameAndYname(uname, person);
+                fanRepository.delete(f);
+                System.out.println("取消关注成功");
+                attention="取消关注成功";
+            }
+            else
+            {
+                System.out.println("未关注");
+                attention="未关注";
+            }
         }
+        if (uname.equals(person)){
+            attention="不能关注自己";
+        }
+        return attention;
     }
 
-    @PostMapping("/unfollow")
-    public void unfollow(@RequestParam("name") String name)
-    {
+    @GetMapping("/follow")
+    public String follow(Model model){
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uname = uid.getUsername();
-        //判断是否已经关注了这个用户
-        Optional<Fan> fanOptional = fanRepository.findByXname(uname);
-        if (fanOptional.isPresent()) {
-            if(fanRepository.existsByXnameAndYname(uname, name)){
-                Fan fan = fanOptional.get();
-                fanRepository.delete(fan);
-            }
-            else{
-            }
-        }
-        else{
-        }
+
+        List<Fan> follows=fanRepository.findByXname(uname);
+        model.addAttribute("follows", follows);
+        return "/user/follow";
+    }
+
+    @GetMapping("/fan")
+    public String fan(Model model){
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        List<Fan> fans=fanRepository.findByYname(uname);
+        model.addAttribute("fans", fans);
+        return "/user/fan";
     }
 }
