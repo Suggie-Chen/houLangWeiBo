@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.w3.org/1999/xhtml">
+<html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -136,7 +136,7 @@
                         <small class="date" style="color:#999">刚刚</small>
                         <div class="msg_content">
                         </div>
-<!--                        <img>-->
+                        <!--                        <img>-->
                         <br><br>
                         <img class="mypic">
                         <br><br>
@@ -159,7 +159,7 @@
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
 
-<!--                    <span  th:text=${message.id}>id</span>-->
+                    <!--                    <span  th:text=${message.id}>id</span>-->
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
                         <a style="font-weight: bold;" th:text="${message.name}" th:href="@{/user/personal(name=${message.name})}"}>Jennifer</a>
@@ -178,15 +178,13 @@
                                     <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
                                     <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
                                     <div th:id="'cmt'+${message.id}" class="collapse">
-                                        <div sec:authorize="hasRole('ROLE_USER')">
-                                             <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
-                                                <div class="form-group">
-                                                    <input  type="text" name="content" style="width: 88%"/>
-                                                    <input type="hidden"  name="msgId" th:value="${message.id}" />
-                                                    <input type="submit" name="comment" value="评论" style="color: #66afe9" />
-                                                </div>
-                                            </form>
-                                        </div>
+                                         <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
+                                            <div class="form-group">
+                                                <input  type="text" name="content" style="width: 88%"/>
+                                                <input type="hidden"  name="msgId" th:value="${message.id}" />
+                                                <input type="submit" name="comment" value="评论" style="color: #66afe9" />
+                                            </div>
+                                        </form>
                                         <div th:id="'text'+${message.id}">
                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -200,7 +198,7 @@
                     </div>
                 </div>
             </div>
-<!--示例微博-->
+            <!--示例微博-->
             <div class="row item_msg" style="display:none">
                 <div class="col-sm-12 col-xs-12 message">
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
@@ -220,7 +218,7 @@
         </div>
 
 
-<!--   右侧的热门话题-->
+        <!--   右侧的热门话题-->
         <div class="col-sm-3 col-xs-12 part_right">
             <div class="row text-center inform">
                 <img src="/images/icon.png">

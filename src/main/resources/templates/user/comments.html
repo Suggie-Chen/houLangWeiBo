@@ -7,14 +7,14 @@
 <body>
 <div>
     <div style="display:block; width:100%">
-    <div th:each="cmt:${comments}" style="margin-top:0px;margin-bottom:20px;padding:10px;background-color: #FFF5F7" >
-        <div hidden="true" th:text="${cmt.publisherId}">发布者id</div>
-        <div th:text="${cmt.publisherName}" style="font-size: medium">发布者id</div>
-        <small class="date" style="color:#999" th:text="${#dates.format(cmt.time,'yyyy-MM-dd HH:mm')}">时间</small>
-<!--        <div th:text="${#dates.format(cmt.time,'yyyy-MM-dd HH:mm')}">时间</div>-->
-        <div  hidden="true" th:text="${cmt.id}">评论id</div>
-        <div th:text="${cmt.content}">内容</div>
-    </div>
+        <div th:each="cmt:${comments}" style="margin-top:0px;margin-bottom:20px;padding:10px;background-color: #FFF5F7" >
+            <div hidden="true" th:text="${cmt.publisherId}">发布者id</div>
+            <div th:text="${cmt.publisherName}" style="font-size: medium">发布者id</div>
+            <small class="date" style="color:#999" th:text="${#dates.format(cmt.time,'yyyy-MM-dd HH:mm')}">时间</small>
+            <!--        <div th:text="${#dates.format(cmt.time,'yyyy-MM-dd HH:mm')}">时间</div>-->
+            <div  hidden="true" th:text="${cmt.id}">评论id</div>
+            <div th:text="${cmt.content}">内容</div>
+        </div>
     </div>
 </div>
 </body>
