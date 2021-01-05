@@ -81,13 +81,13 @@
          style="padding-top: 20px; padding-bottom: 20px;margin-bottom: 10px; font-size: 20px">
         <div class="pf_opt row">
             <div class="col-md-2 col-md-offset-2">
-                <span class="sort">关注 <div th:text="${follows}">123</div></span>
+                <span class="sort">关注 <span th:text="${follows}">123</span></span>
             </div>
             <div class="col-md-2">
-                <span class="sort">粉丝 <div th:text="${fans}">123</div></span>
+                <span class="sort">粉丝 <span th:text="${fans}">123</span></span>
             </div>
             <div class="col-md-2">
-                <span class="sort">博客 <div th:text="${welogs}">123</div></span>
+                <span class="sort">博客 <span th:text="${welogs}">123</span></span>
             </div>
         </div>
     </div>
@@ -210,11 +210,11 @@
                 data: {"person":name,"type":1},
                 //contentType: "charset=utf-8",
                 dataType: "json",
-                success: function (data) {
-                    alert("关注成功！");
+                success: function (attention) {
+                    alert(attention);
                 },
-                error: function () {
-                    alert(err);
+                error: function (attention) {
+                    alert(attention);
                 }
             });
         });
@@ -227,11 +227,11 @@
                 url: "/user/personal",
                 //contentType: "charset=utf-8",
                 dataType: "json",
-                success: function () {
-                    alert("取消关注！");
+                success: function (attention) {
+                    alert(attention);
                 },
-                error: function () {
-                    alert(err);
+                error: function (attention) {
+                    alert(attention);
                 }
             });
         });

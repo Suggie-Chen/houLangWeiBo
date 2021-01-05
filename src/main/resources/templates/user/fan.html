@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>粉丝列表</title>
+</head>
+<body>
+    <h1 style="color:hotpink">粉丝列表</h1>
+    <a href="/user/home">返回首页</a>
+    <br><br><br>
+    <div th:each="fan:${fans}" class="collapse">
+        <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%;height:60px;width:60px">
+        <span th:text="${fan.Xname}" style="font-size: 30px">
+        </span>
+    </div>
+</body>
+</html>

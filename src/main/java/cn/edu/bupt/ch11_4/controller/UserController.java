@@ -239,18 +239,20 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/personal")
-    public void follow(@RequestParam("person") String person,
-                       @RequestParam("type") Integer type)
+    public String follow(@RequestParam("person") String person,
+                         @RequestParam("type") Integer type)
     {
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uname = uid.getUsername();
         //判断是否已经关注了这个用户
+        String attention;   //回显信息
 
         boolean flag=fanRepository.existsByXnameAndYname(uname, person);
         if (type==1)  //关注
         {
             if (flag||uname.equals(person))
             {
+                attention="已关注";
                 System.out.println("已关注");
             }
             else
@@ -259,6 +261,7 @@ public class UserController {
                 f.setXname(uname);
                 f.setYname(person);
                 fanRepository.save(f);
+                attention="关注成功";
                 System.out.println("关注成功");
             }
         }
@@ -269,31 +272,37 @@ public class UserController {
                 Fan f= fanRepository.findByXnameAndYname(uname, person);
                 fanRepository.delete(f);
                 System.out.println("取消关注成功");
+                attention="取消关注成功";
             }
             else
             {
                 System.out.println("未关注");
+                attention="未关注";
             }
         }
-
+        if (uname.equals(person)){
+            attention="不能关注自己";
+        }
+        return attention;
     }
 
-//    @PostMapping("/personal")
-//    public void unfollow(@RequestParam("person") String person)
-//    {
-//        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String uname = uid.getUsername();
-//
-//        //判断是否已经关注了这个用户
-//        boolean flag=fanRepository.existsByXnameAndYname(uname, person);
-//        if (flag)
-//        {
-//            Fan f= fanRepository.findByXnameAndYname(uname, person);
-//            fanRepository.delete(f);
-//        }
-//        else
-//            {
-//            System.out.println("未关注");
-//        }
-//    }
+    @GetMapping("/follow")
+    public String follow(Model model){
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        List<Fan> follows=fanRepository.findByXname(uname);
+        model.addAttribute("follows", follows);
+        return "/user/follow";
+    }
+
+    @GetMapping("/fan")
+    public String fan(Model model){
+        SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uname = uid.getUsername();
+
+        List<Fan> fans=fanRepository.findByYname(uname);
+        model.addAttribute("fans", fans);
+        return "/user/fan";
+    }
 }
