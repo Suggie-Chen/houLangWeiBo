@@ -43,7 +43,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                     .failureForwardUrl("/loginfailure?error=true")
                     .failureHandler((httpServletRequest, httpServletResponse, e) -> {
                             System.out.println("登陆失败处理=============重定向到登录页面");
-                            //返回到登陆页面，可以采用AJAX技术实现，提示用户用户名不存在，密码不正确之类错误
+                            //返回到登陆页面，可以采用AJAX技术实现，提示用户用户名不存在，密码不正确之类的错误
                             System.out.println(e.getMessage());
                             String msg = null;
                             if (e instanceof LockedException) {

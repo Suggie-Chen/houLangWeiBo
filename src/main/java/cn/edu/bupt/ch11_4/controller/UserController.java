@@ -152,7 +152,7 @@ public class UserController {
 
     @PostMapping("/comment")
     public String comments(@RequestParam("msgId")String msgId,@RequestParam("content")String content,Model model){
-        //将评论存入数据库
+
         Long msgid = Long.parseLong(msgId);
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
@@ -162,7 +162,6 @@ public class UserController {
 //        System.out.println(content);
 //        System.out.println(userid);
 //        System.out.println(time);
-
         Comment c = new Comment();
         Optional<Message> messageOptional=messageRepository.findById(msgid);
         if(messageOptional.isPresent()) {
@@ -176,7 +175,7 @@ public class UserController {
         c.setTime(time);
         c.setPublisherName(name);
         c.setPublisherId(userid);
-        commentRepository.save(c);
+        commentRepository.save(c);//将评论存入数据库
         List<Comment> comments=commentRepository.findByMsgId(msgid);
 
         model.addAttribute("comments", comments);
