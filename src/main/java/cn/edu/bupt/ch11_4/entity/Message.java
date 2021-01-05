@@ -20,18 +20,14 @@ public class Message {
     private Integer thumbUp;  //点赞数
     private Integer cmtNum; //评论数
 
-    //图片
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name="picture", columnDefinition="longblob", nullable=true)
-    private byte[] Picture;
-
-//    private String picUrl;  //图片的url
 //    //图片
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
+//    @Lob
+//    @Basic(fetch = FetchType.LAZY)
 //    @Column(name="picture", columnDefinition="longblob", nullable=true)
 //    private byte[] Picture;
+
+    private String picUrl;  //图片的url
+
 
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
