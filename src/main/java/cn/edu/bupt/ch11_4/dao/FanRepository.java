@@ -13,4 +13,8 @@ public interface FanRepository extends JpaRepository<Fan,String> {
     boolean existsByXnameAndYname(String xname,String yname);
 
     Fan findByXnameAndYname(String uname, String name);
+
+    Integer countByXname(String x); //关注数
+
+    Integer countByYname(String y); //粉丝数
 }
