@@ -158,21 +158,18 @@
             <!--th显示微博-->
             <div class="row item_msg" th:each="message:${messages}">
                 <div class="col-sm-12 col-xs-12 message">
-                    <span  th:text=${message.id}>id</span>
+
+<!--                    <span  th:text=${message.id}>id</span>-->
                     <img src="/images/icon.png" class="col-sm-2 col-xs-2" style="border-radius: 50%">
                     <div class="col-sm-10 col-xs-10">
                         <span style="font-weight: bold;" th:text="${message.name}"}>Jennifer</span>
+                        <span><a th:href="'/user?name='+${uname}">链接在此</a></span>
                         <br>
                         <small class="date" style="color:#999" th:text="${message.time}">刚刚</small>
                         <div class="msg_content" th:text="${message.content}">
                             今天天气不错!
                         </div>
-                        <br><br>
-<!--                        <div th:text="${message.picture}" style="display: none"></div>-->
-<!--                        <button class="show_pic" th:id="'show_pic'+${message.id}">点击显示图片</button>-->
-<!--                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片" style="display: none">-->
-<!--                        <div th:id="'picture'+${message.id}" th:text="${message.picture}" ></div>-->
-<!--                        <img class="mypic" th:id="'pic'+${message.id}" src="" alt="无图片">-->
+
                         <br><br>
                         <span class="commentsAndThumbUps" th:id="${message.id}">
                         <!--                        <span><button>点赞</button> </span>-->
@@ -184,27 +181,14 @@
                             <span>
                                 <img th:id="'img2'+${message.id}" class="xinfeng"  src="/images/xf.png" data-toggle="collapse" th:data-target="'#cmt'+${message.id}"  width="13" height="13" alt="xinfeng.png" onclick="sendId(event)">
                                 <span th:id="'cmtNum'+${message.id} " class="cmtNum" th:text="${message.cmtNum}" >666</span>
-
-                                <!--                                <form hidden="false"></form>-->
-                                <!--                                <button th:id="'btn'+${message.id}" type="button" class="btn btn-primary" data-toggle="collapse" th:data-target="'#cmt'+${message.id}" th:formaction="/user/comment">评论</button>-->
                                 <div th:id="'cmt'+${message.id}" class="collapse">
                                      <form role="form" style="margin-top: 12px;"  method="post" th:action="@{/user/comment}">
                                         <div class="form-group">
-<!--                                                <div contenteditable="true" th:id="'cmtContent'+${message.id}" class="form-control "></div>-->
-                                            <input  type="text" name="content"/>
-                                            <!--                                            <div class="col-sm-12" style="margin-top: 12px;">-->
-                                            <!--                                                <button type="button" th:id="'cmtSend'+${message.id}" class="btn btn-default pull-right disabled" style="color:lightskyblue">评论</button>-->
-                                            <!--                                            </div>-->
+                                            <input  type="text" name="content" style="width: 88%"/>
                                             <input type="hidden"  name="msgId" th:value="${message.id}" />
-                                            <input type="submit" name="评论" />
+                                            <input type="submit" name="comment" value="评论" style="color: #66afe9" />
                                         </div>
                                     </form>
-<!--                                    <tr th:each="cmt:${comments}" >-->
-<!--                                        <td th:text="${cmt.id}">评论id</td>-->
-<!--                                        <td th:text="${cmt.publisherId}">发布者id</td>-->
-<!--                                        <td th:text="${cmt.content}">内容</td>-->
-<!--                                        <td th:text="${cmt.time}">时间</td>-->
-<!--                                    </tr>-->
                                     <div th:id="'text'+${message.id}">
                                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -214,8 +198,6 @@
                                 </div>
                             </span>
                         </span>
-
-
                     </div>
                 </div>
             </div>
@@ -455,12 +437,9 @@
 </script>
 
 <!--点赞-->
-<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>-->
 <script type="text/javascript">
     $(document).ready(function() {
-
-        $(".zan").click(function (event)
-            //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
+        $(".zan").click(function (event)//当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
         {
             var imgid =event.target.id
             console.log("imgid=",imgid)
@@ -473,14 +452,10 @@
                 url: "/user/zan",
                 type: "GET",
                 data: {"msgid":msgid},
-                //dataType: "json",
-
                 success: function (result) {
                     $("#zanNum"+msgid).html(result)
                 },
-                error: function (xhr, textStatus, errorThrown) {
-                    /*错误信息处理*/
-                    alert("进入error---");
+                error: function (xhr, textStatus, errorThrown) {/*错误信息处理*/
                     alert("状态码：" + xhr.status);
                     alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
                     alert("错误信息:" + xhr.statusText);
@@ -498,7 +473,6 @@
     $(document).ready(function() {
 
         $(".show_pic").click(function (event)
-            //当增加页面 电话输入框变化时 发送ajax请求看是否电话已存在
         {
             var imgid =event.target.id;
             console.log("imgid=",imgid);
@@ -554,13 +528,11 @@
             data: {"msgId":msgId},
             success: function (result) {
                 $("#text" + msgId).html(result);
-//                console.log("result=",result)
 //                alert("刷新评论返回成功！")
 //                console.log("返回成功!");
             },
             error: function (xhr, textStatus, errorThrown) {
                 /*错误信息处理*/
-                alert("进入error---");
                 alert("状态码：" + xhr.status);
                 alert("状态:" + xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
                 alert("错误信息:" + xhr.statusText);

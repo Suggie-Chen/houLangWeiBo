@@ -120,18 +120,15 @@ public class UserController {
             sysUser = new SysUser();
             sysUser.setUsername(username);
             sysUser.setPassword(passwordEncoder.encode(password));
-//            if(username.equals("admin")){
             SysRole sysRole = new SysRole();
             sysRole.setType("ROLE_USER");
             sysRoleRepository.save(sysRole);
             List<SysRole> roles = new ArrayList<SysRole>();
             roles.add(sysRole);
             sysUser.setRoles(roles);
-//            }
             sysUserRepository.save(sysUser);
             System.out.println("注册成功处理=============");
             return "redirect:/user/login";
-
         }
     }
 
@@ -153,19 +150,19 @@ public class UserController {
         }
     }
 
-    //    @ResponseBody
     @PostMapping("/comment")
     public String comments(@RequestParam("msgId")String msgId,@RequestParam("content")String content,Model model){
         //将评论存入数据库
-        System.out.println(msgId);
-        System.out.println(content);
         Long msgid = Long.parseLong(msgId);
         SysUser uid = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userid = uid.getId();
         String name=uid.getUsername();
-        System.out.println(userid);
         Date time=new Date();
-        System.out.println(time);
+//        System.out.println(msgId);
+//        System.out.println(content);
+//        System.out.println(userid);
+//        System.out.println(time);
+
         Comment c = new Comment();
         Optional<Message> messageOptional=messageRepository.findById(msgid);
         if(messageOptional.isPresent()) {
@@ -180,36 +177,21 @@ public class UserController {
         c.setPublisherName(name);
         c.setPublisherId(userid);
         commentRepository.save(c);
-
-//        显示消息
-//        List<Comment> commentsop = commentRepository.findByMsgId(msgid);
-//        if (commentsop.isPresent()) {
-//            Comment comments = commentsop.get();
-//            System.out.println(comments);
-//            model.addAttribute("comments", comments);
-//        }
         List<Comment> comments=commentRepository.findByMsgId(msgid);
-//        System.out.println(comments);
+
         model.addAttribute("comments", comments);
         return "redirect:/user/home";
     }
 
-//    @ResponseBody
+
     @GetMapping("/comment")
     public Object comment(@RequestParam("msgId")String msgId,Model model){
         System.out.println(msgId);
         Long id = Long.parseLong(msgId);
-//        Optional<Comment> commentsop = commentRepository.findByMsgId(id);
-//        if (commentsop.isPresent()) {
-//            Comment comments = commentsop.get();
-//            System.out.println(comments);
-//            model.addAttribute("comments",comments);
+
         List<Comment> comments=commentRepository.findByMsgId(id);
         model.addAttribute("comments", comments);
-            return "/user/comments";
-//        } else {
-//            return "/user/failure";
-//        }
+        return "/user/comments";
     }
     //曲曲写的↓
 //    @GetMapping("/personal")

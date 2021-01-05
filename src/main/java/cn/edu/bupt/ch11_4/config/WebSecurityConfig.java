@@ -26,8 +26,6 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
         //允许h2-console的frameset界面
         http.headers()
                 .frameOptions().disable()
@@ -39,13 +37,13 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
                         System.out.println("登陆成功处理==============");
-                            //跳转到微博整体首页 ，配置登录成功的回调，如果是前后端分离开发的话，登录成功后返回 JSON 即可，
+                            //跳转到微博整体首页 ，配置登录成功的回调
                             httpServletResponse.sendRedirect("/user/home");
                         })
                     .failureForwardUrl("/loginfailure?error=true")
                     .failureHandler((httpServletRequest, httpServletResponse, e) -> {
                             System.out.println("登陆失败处理=============重定向到登录页面");
-                            //返回到登陆页面，可以采用AJAX技术实现，提示用户用户名不存在，密码不正确之类的
+                            //返回到登陆页面，可以采用AJAX技术实现，提示用户用户名不存在，密码不正确之类错误
                             System.out.println(e.getMessage());
                             String msg = null;
                             if (e instanceof LockedException) {

@@ -21,9 +21,10 @@ public class SysUser implements UserDetails {
     private Long id;
     private String username;
     private String password;
-//    private List<Long> followers;
     @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
-    //在系统中定义用户，角色，权限这三种实体，一个用户可以拥有多个角色，一个角色可以被多个用户拥有，所以用户与角色之间是多对多的关系，为了易于理解，这里加入第三种实体权限，作为用户和角色的中间关联实体，把用户与角色间的多对多关系拆为两个一对多的关联关系。这样一个用户就对应着多个权限，一个权限对应着一个用户，而一个角色对应着多个权限，一个权限对应着一个角色。
+    /*在系统中定义用户，角色，权限这三种实体，一个用户可以拥有多个角色，一个角色可以被多个用户拥有，所以用户与角色之间是多对多的关系，
+    为了易于理解，这里加入第三种实体权限，作为用户和角色的中间关联实体，把用户与角色间的多对多关系拆为两个一对多的关联关系。
+    这样一个用户就对应着多个权限，一个权限对应着一个用户，而一个角色对应着多个权限，一个权限对应着一个角色。*/
     private List<SysRole> roles;
 
 //    //一个用户对应多条微博
