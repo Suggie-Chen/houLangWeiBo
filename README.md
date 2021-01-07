@@ -1,5 +1,5 @@
 # houLangWeiBo
-JavaWeb  springMVC+Thymeleaf+H2数据库实现简易微博
+JavaWeb  springMVC+springSecurity+Thymeleaf+H2数据库实现简易微博
 北京邮电大学 网络工程 web开发技术基础大作业
 
 题目：简易版微博客系统的设计与实现
